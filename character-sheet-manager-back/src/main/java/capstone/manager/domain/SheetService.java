@@ -24,14 +24,14 @@ public class SheetService {
             return result;
         }
 
-        if (sheet.getId() <= 0) {
-            result.addMessage("sheet id is required");
+        if (sheet.getId() != 0) {
+            result.addMessage("sheet id cannot be set for `add` operation.");
             return result;
         }
 
-        boolean success = repository.update(sheet);
-        if (!success) {
-            result.addMessage("could not update sheet id " + sheet.getId());
+        if (result.isSuccess()) {
+            Sheet s = repository.create(sheet);
+            result.setPayload(s);
         }
 
         return result;
