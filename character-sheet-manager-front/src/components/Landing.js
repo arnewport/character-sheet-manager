@@ -1,6 +1,13 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 function Landing() {
+
+    const auth = useContext(AuthContext);
+
+    const navigate = useNavigate();  
+
     return (
         <div className="container-fluid">
             <h1 className="display-5">Character Sheet Manager</h1>
