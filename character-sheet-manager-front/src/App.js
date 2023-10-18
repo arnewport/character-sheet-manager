@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
@@ -9,6 +9,7 @@ import Error from "./components/Error";
 import NotFound from "./components/NotFound";
 
 import Login from "./components/Login";
+import SignUpForm from "./components/SignUpForm";
 import AuthContext from "./contexts/AuthContext";
 
 // Landing
@@ -17,83 +18,67 @@ import AuthContext from "./contexts/AuthContext";
 // CharacterSheet
 // NotFound
 
-// NEW: Define a variable for the localStorage token item key
-const LOCAL_STORAGE_TOKEN_KEY = "managerToken";
+import { refreshToken, logout } from "./services/authAPI";
+
+const TIMEOUT_MILLISECONDS = 14 * 60 * 1000;
 
 function App() {
+  const [user, setUser] = useState();
+  const [initialized, setInitialized] = useState(false);
 
-  const [user, setUser] = useState(null);
-  // NEW: Define a state variable to track if 
-  // the restore login attempt has completed
-  const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
-
-  // NEW: Define a useEffect hook callback function to attempt
-  // to restore the user's token from localStorage
-  useEffect(() => {
-    const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-    if (token) {
-      login(token);
-    }
-    setRestoreLoginAttemptCompleted(true);
+  const resetUser = useCallback(() => {
+    refreshToken()
+      .then((user) => {
+        setUser(user);
+        setTimeout(resetUser, TIMEOUT_MILLISECONDS);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setInitialized(true));
   }, []);
 
-  const login = (token) => {
-    // NEW: set the token in localStorage
-    localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
-
-    // Decode the token
-    const { sub: username, authorities: authoritiesString } = jwtDecode(token);
-  
-    // Split the authorities string into an array of roles
-    const roles = authoritiesString.split(',');
-  
-    // Create the "user" object
-    const user = {
-      username,
-      roles,
-      token,
-      hasRole(role) {
-        return this.roles.includes(role);
-      }
-    };
-  
-    // Log the user for debugging purposes
-    console.log(user);
-  
-    // Update the user state
-    setUser(user);
-  
-    // Return the user to the caller
-    return user;
-  };
-  
-  const logout = () => {
-    setUser(null);
-    // NEW: remove the token from localStorage
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
-  };
+  useEffect(() => {
+    resetUser();
+  }, [resetUser]);
 
   const auth = {
-    user: user ? { ...user } : null,
-    login,
-    logout
+    user: user,
+    handleLoggedIn(user) {
+      setUser(user);
+      setTimeout(resetUser, TIMEOUT_MILLISECONDS);
+    },
+    hasAuthority(authority) {
+      return user?.authorities.includes(authority);
+    },
+    logout() {
+      logout();
+      setUser(null);
+    },
   };
 
-  // NEW: If we haven't attempted to restore the login yet...
-  // then don't render the App component
-  if (!restoreLoginAttemptCompleted) {
+  if (!initialized) {
     return null;
   }
+
+  const renderWithAuthority = (Component, ...authorities) => {
+    for (let authority of authorities) {
+      if (auth.hasAuthority(authority)) {
+        return <Component />;
+      }
+    }
+    return <Error />;
+  };
 
   return (
     <AuthContext.Provider value={auth}>
       <Router>
         <main className="container">
           <Routes>
-          <Route path="/login" element ={!user ? <Login /> : <Navigate to="/" replace={true} />} />
-            <Route path="/" element={<Landing />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/sheets" element={<CharacterSheet />} />
+            <Route path="/login" element ={!user ? <Login /> : <Navigate to="/" replace={true} />} />
+            <Route path="/" element={renderWithAuthority(Landing, "ADMIN", "USER")} />
+            {/* <Route path="/home" element={<Home />} />
+            <Route path="/sheets" element={<CharacterSheet />} /> */}
             {/* <Route
               path="/agents/add"
               element={<AgentForm />}

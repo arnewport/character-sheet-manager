@@ -1,76 +1,81 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/authAPI";
 
-import Error from "./Error";
-// NEW: import AuthContext
 import AuthContext from "../contexts/AuthContext";
+import ValidationSummary from "./ValidationSummary";
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
   const [errors, setErrors] = useState([]);
 
-  // NEW: grab the value attribute from AuthContext.Provider
-  const auth = useContext(AuthContext);
+  const { handleLoggedIn } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    setErrors([]);
+    login(credentials)
+      .then(user => {
+        handleLoggedIn(user);
+        navigate("/");
+      })
+      .catch(err => {
+        setErrors(['Invalid username/password.']);
+      });
+  };
 
-    const response = await fetch("http://localhost:8080/authenticate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-  
-    // This code executes if the request is successful
-    if (response.status === 200) {
-      const { jwt_token } = await response.json();
-      console.log(jwt_token);
-      // NEW: login!
-      auth.login(jwt_token);
-      navigate("/");
-    } else if (response.status === 403) {
-      setErrors(["Login failed."]);
-    } else {
-      setErrors(["Unknown error."]);
-    }
+  const handleChange = (evt) => {
+    const nextCredentials = {...credentials};
+    nextCredentials[evt.target.name] = evt.target.value;
+    setCredentials(nextCredentials);
   };
 
   return (
     <div>
-      <h2>Login</h2>
-      {errors.map((error, i) => (
-        <Error key={i} msg={error} />
-      ))}
+      <ValidationSummary errors={errors} />
       <form onSubmit={handleSubmit}>
         <div>
-          {/* Includes for/id attributes for basic HTML accessibility ♿. */}
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            onChange={(event) => setUsername(event.target.value)}
-            id="username"
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            onChange={(event) => setPassword(event.target.value)}
-            id="password"
-          />
-        </div>
-        <div>
-          <button type="submit">Login</button>
+          <div className="form-group">
+            <label htmlFor="label">Username</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              name="username"
+              value={credentials.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="label">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Link to="/" className="btn btn-secondary">
+              Cancel
+            </Link>
+            <button type="submit" className="btn btn-primary">
+              Log in
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
 }
+
+export default Login;
