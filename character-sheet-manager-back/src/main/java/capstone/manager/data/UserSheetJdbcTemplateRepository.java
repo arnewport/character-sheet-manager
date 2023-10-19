@@ -4,11 +4,13 @@ import capstone.manager.data.mappers.UserSheetMapper;
 import capstone.manager.models.UserSheet;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
 
     private final JdbcTemplate jdbcTemplate;

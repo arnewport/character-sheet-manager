@@ -3,23 +3,25 @@ package capstone.manager.domain;
 
 import capstone.manager.data.UserSheetRepository;
 import capstone.manager.models.UserSheet;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserSheetService {
 
     private final UserSheetRepository repository;
-    
+
     public UserSheetService(UserSheetRepository repository) {
         this.repository = repository;
     }
-    
+
     public List<UserSheet> findSheetsByUserId(int userId) {
         return repository.findSheetsByUserId(userId);
     }
-    
+
     public Result<UserSheet> create(UserSheet userSheet) {
-        
+
         Result<UserSheet> result = validate(userSheet);
         if (!result.isSuccess()) {
             return result;
@@ -45,7 +47,7 @@ public class UserSheetService {
     public boolean deleteBySheetId(int sheetId) {
         return repository.deleteById(sheetId);
     }
-    
+
     public Result<UserSheet> validate(UserSheet userSheet) {
         Result<UserSheet> result = new Result<>();
         if (userSheet == null) {
