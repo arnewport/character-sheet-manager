@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SheetMapper implements RowMapper<Sheet>{
+public class SheetMapper implements RowMapper<Sheet> {
 
     @Override
     public Sheet mapRow(ResultSet resultSet, int i) throws SQLException {

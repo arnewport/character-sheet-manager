@@ -15,6 +15,20 @@ create table sheet (
     attack_bonus int
 );
 
+create table user_sheet (
+	user_sheet_id int primary key auto_increment,
+    user_id int not null,
+    sheet_id int not null,
+    `role` varchar(10) not null,
+    `status` varchar(50) not null,
+    constraint fk_user_user_sheet_id
+        foreign key (user_id)
+        references app_user(app_user_id),
+    constraint fk_user_sheet_sheet_id
+        foreign key (sheet_id)
+        references sheet(sheet_id)
+);
+
 -- data
 insert into sheet values
 	(1, 'Player', 'Character', 10, 20, 16, 14, 19, 0);
@@ -61,5 +75,5 @@ insert into app_user (username, password_hash, enabled)
 
 insert into app_user_role
     values
-    (1, 2),
+    (1, 1),
     (2, 1);

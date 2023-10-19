@@ -19,7 +19,6 @@ public class SheetJdbcTemplateRepository implements SheetRepository {
     }
 
     @Override
-    @Transactional
     public Sheet findById(int id) {
 
         final String sql = """

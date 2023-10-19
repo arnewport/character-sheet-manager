@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class AppUser implements UserDetails {
-    private  int id;
+    private int id;
     private String username;
     private String passwordHash;
     private boolean enabled;
