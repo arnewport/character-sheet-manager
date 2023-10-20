@@ -4,7 +4,7 @@ import { register } from "../services/authAPI";
 
 import ValidationSummary from "./ValidationSummary";
 
-function SignUpForm() {
+function SignUp() {
   const [errors, setErrors] = useState([]);
   const [credentials, setCredentials] = useState({
     username: "",
@@ -102,4 +102,4 @@ function SignUpForm() {
   );
 }
 
-export default SignUpForm;
+export default SignUp;

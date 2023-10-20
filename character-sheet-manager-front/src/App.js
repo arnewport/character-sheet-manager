@@ -9,7 +9,7 @@ import Error from "./components/Error";
 import NotFound from "./components/NotFound";
 
 import Login from "./components/Login";
-import SignUpForm from "./components/SignUpForm";
+import SignUp from "./components/SignUp";
 import AuthContext from "./contexts/AuthContext";
 
 // Landing
@@ -71,12 +71,16 @@ function App() {
   };
 
   return (
-    <AuthContext.Provider value={auth}>
-      <Router>
-        <main className="container">
+    <main className="container">
+      <AuthContext.Provider value={auth}>
+        <Router>
           <Routes>
-            <Route path="/login" element ={!user ? <Login /> : <Navigate to="/" replace={true} />} />
-            <Route path="/" element={renderWithAuthority(Landing, "ADMIN", "USER")} />
+            <Route path="/" element={!user ? <Landing /> : <Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/sheets" element={<CharacterSheet />} />
+            {/* <Route path="/" element={!user ? <Login /> : <Navigate to="/" replace={true} />} />
+            <Route path="/" element={renderWithAuthority(Landing, "ADMIN", "USER")} /> */}
             {/* <Route path="/home" element={<Home />} />
             <Route path="/sheets" element={<CharacterSheet />} /> */}
             {/* <Route
@@ -90,9 +94,9 @@ function App() {
             <Route path="/error" element={<Error />}/>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </main>
-      </Router>
-    </AuthContext.Provider>
+        </Router>
+      </AuthContext.Provider>
+    </main>
   );
 }
 
