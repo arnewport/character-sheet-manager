@@ -78,8 +78,8 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/home" element={!renderWithAuthority(Home, "USER")} />
-            <Route path="/sheets" element={!renderWithAuthority(CharacterSheet, "USER")} />
+            <Route path="/home" element={renderWithAuthority(Home, "USER")} />
+            <Route path="/sheets" element={renderWithAuthority(CharacterSheet, "USER")} />
             {/* <Route path="/" element={!user ? <Login /> : <Navigate to="/" replace={true} />} />
             <Route path="/" element={renderWithAuthority(Landing, "ADMIN", "USER")} /> */}
             {/* <Route path="/home" element={<Home />} />
