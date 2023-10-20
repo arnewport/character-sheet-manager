@@ -12,8 +12,8 @@ function Landing() {
         <div className="container-fluid">
             <h1 className="display-5">Character Sheet Manager</h1>
             <div className="d-flex flex-grow-1 justify-content-end">
-                <Link id="btnAdd" to="/login" className="btn btn-info">Login</Link>
-                <Link id="btnAdd" to="/signup" className="btn btn-info">Sign Up</Link>
+                <Link to="/login" className="btn btn-info">Login</Link>
+                <Link to="/signup" className="btn btn-info">Sign Up</Link>
             </div>
         </div>
     );

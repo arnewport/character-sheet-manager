@@ -9,6 +9,7 @@ const useUserSheets = () => {
     const userId = user.userId;
 
     // state
+    const [loading, setLoading] = useState(true);
     const [userSheetArray, setUserSheetArray] = useState([]);
 
     // fetch array of sheets connected to the user
@@ -30,13 +31,15 @@ const useUserSheets = () => {
                     setUserSheetArray(userSheetArray);
                 } catch (error) {
                     console.error(error);
+                } finally {
+                    setLoading(false);
                 }
             }
             
             fetchSheetsByUser();
         }, []);
 
-    return userSheetArray;
+    return [userSheetArray, loading];
 }
 
 export default useUserSheets;

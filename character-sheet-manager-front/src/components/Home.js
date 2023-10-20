@@ -1,42 +1,40 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import useUserSheets from "../hooks/useUserSheets";
+import { logout } from "../services/authAPI";
 
 function Home() {
 
-  const [userSheetArray] = useUserSheets();
+  const [userSheetArray, loading] = useUserSheets();
 
     const generateCards = () => {
-        const count = 6;
-        const cards = [];
-    
-        for (let i = 1; i <= count; i++) {
-          const card = (
-            <Col key={i} lg={4} md={6} sm={12}>
-              <Link to={`/sheets`}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>Card {i}</Card.Title>
-                    <Card.Text>Card description here.</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          );
-    
-          cards.push(card);
-        }
-    
-        return cards;
+
+      return userSheetArray.map((usa, i) => 
+        (
+          <Col key={i} lg={4} md={6} sm={12}>
+            <Link to={`/sheets`}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Card {usa.sheetId}</Card.Title>
+                  <Card.Text>Card description here.</Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+          </Col>
+        ));
     }
+
+  if (loading) {
+    return null;
+  }  
 
     return (
         <>
             <div className="container-fluid">
                 <h1 className="display-5">Character Sheet Manager</h1>
                 <div className="d-flex flex-grow-1 justify-content-end">
-                    <Link id="btnAdd" to="/" className="btn btn-info">Log Out</Link>
+                    <Link to="/" className="btn btn-info" onClick={logout}>Log Out</Link>
                 </div>
                 <Row>
                     {generateCards()}

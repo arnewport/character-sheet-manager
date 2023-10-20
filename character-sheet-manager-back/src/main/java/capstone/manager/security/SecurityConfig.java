@@ -29,17 +29,12 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/refresh-token").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/game", "/api/game/*").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/game").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/api/game/*").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/api/game/*").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/category").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/category").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/category/*").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/category/*").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/availability").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/v1/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/**").permitAll()
                 .requestMatchers("/**").denyAll());
 
         http.addFilter(new JwtRequestFilter(authenticationManager(authConfig), jwtConverter));
