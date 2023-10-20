@@ -77,7 +77,8 @@ function makeUserFromJwt(jwtToken) {
     const decodedToken = JSON.parse(userData);
     return {
       username: decodedToken.sub,
-      authorities: decodedToken.authorities
+      authorities: decodedToken.authorities,
+      userId: decodedToken.user_id
     };
   }
 }

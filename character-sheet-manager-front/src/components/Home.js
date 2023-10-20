@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, Col, Row } from 'react-bootstrap';
+import useUserSheets from "../hooks/useUserSheets";
 
 function Home() {
+
+  const [userSheetArray] = useUserSheets();
 
     const generateCards = () => {
         const count = 6;

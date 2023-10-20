@@ -22,7 +22,7 @@ public class AppUserJdbcTemplateRepository implements AppUserRepository {
     public AppUser findByUsername(String username) {
 
         String sql = """
-                select 
+                select
                      u.app_user_id,
                      u.username,
                      u.password_hash,
@@ -41,7 +41,7 @@ public class AppUserJdbcTemplateRepository implements AppUserRepository {
 
     private List<String> getAuthorities(String username) {
         final String sql = """
-                select 
+                select
                     r.name
                 from app_role r
                 inner join app_user_role ur on ur.app_role_id = r.app_role_id

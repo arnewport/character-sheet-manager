@@ -114,7 +114,7 @@ function CharacterSheet() {
             <Button variant="primary" type="submit">
               Submit
             </Button>
-            <Link to="/home" className="btn btn-warning">
+            <Link to="/" className="btn btn-warning">
               Cancel
             </Link>
           </Form>
