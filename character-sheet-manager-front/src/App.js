@@ -12,12 +12,6 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import AuthContext from "./contexts/AuthContext";
 
-// Landing
-// Login
-// Home
-// CharacterSheet
-// NotFound
-
 import { refreshToken, logout } from "./services/authAPI";
 
 const TIMEOUT_MILLISECONDS = 14 * 60 * 1000;
@@ -79,7 +73,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/home" element={renderWithAuthority(Home, "USER")} />
-            <Route path="/sheets" element={renderWithAuthority(CharacterSheet, "USER")} />
+            <Route path="/sheet/:id" element={renderWithAuthority(CharacterSheet, "USER")} />
             {/* <Route path="/" element={!user ? <Login /> : <Navigate to="/" replace={true} />} />
             <Route path="/" element={renderWithAuthority(Landing, "ADMIN", "USER")} /> */}
             {/* <Route path="/home" element={<Home />} />

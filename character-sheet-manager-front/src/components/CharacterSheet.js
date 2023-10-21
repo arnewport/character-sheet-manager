@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+// import useSheet from '../hooks/useSheet';
 
-function CharacterSheet() {
-
-    const [formData, setFormData] = useState({
+const INITIAL_SHEET = {
         playerName: '',
         characterName: '',
         curHitPoints: 0,
@@ -12,13 +11,38 @@ function CharacterSheet() {
         armorClass: 0,
         savingThrow: 0,
         thac0: 0,
-        attackBonus: 0,
-      });
+        attackBonus: 0
+}
+
+function CharacterSheet() {
+
+    const [sheet, setSheet] = useState(INITIAL_SHEET);
+    const [errors, setErrors] = useState([]);
+    const { id } = useParams();
+
+    useEffect(() => {
+      if (id) {
+        fetch("http://localhost:8080/api/v1/sheet/" + id)
+          .then(response => {
+                     if (response.ok) {
+                      return response.json();
+                     }  else {
+                      return Promise.reject(
+                          new Error(`Unexpected status code ${response.status}`)
+                      );
+                     }
+                  })
+          .then(setSheet).catch(
+                      error => {
+                          console.error(error);
+                      });
+                  }
+              }, [id]);
     
       const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-          ...formData,
+        setSheet({
+          ...sheet,
           [name]: value,
         });
       };
@@ -26,12 +50,38 @@ function CharacterSheet() {
       const handleSubmit = (e) => {
         e.preventDefault();
         // You can handle form submission here
-        console.log(formData);
+        const config = {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sheet),
+        };
+        fetch("http://localhost:8080/api/v1/sheet/" + id, config)
+          .then(response => {
+            if (response.ok) {
+              // navigate("/agents");
+            } else if (response.status === 400) {
+              return response.json();
+            }
+          })
+          .then(errors => {
+                      if (errors) {
+                          return Promise.reject(errors);
+                      }
+                  })
+                  .catch(errors => {
+                      if (errors.length) {
+                          setErrors(errors);
+                      } else {
+                          setErrors([errors]);
+                      }
+                  });
       };
     
       return (
         <Container>
-          <h1>Character Information</h1>
+          <h1>Character Sheet</h1>
           <Form onSubmit={handleSubmit}>
             <Row>
               <Col md={6}>
@@ -40,7 +90,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="text"
                     name="playerName"
-                    value={formData.playerName}
+                    value={sheet.playerName}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -49,7 +99,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="curHitPoints"
-                    value={formData.curHitPoints}
+                    value={sheet.curHitPoints}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -58,7 +108,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="armorClass"
-                    value={formData.armorClass}
+                    value={sheet.armorClass}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -67,7 +117,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="thac0"
-                    value={formData.thac0}
+                    value={sheet.thac0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -78,7 +128,7 @@ function CharacterSheet() {
                     <Form.Control
                         type="text"
                         name="characterName"
-                        value={formData.characterName}
+                        value={sheet.characterName}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -87,7 +137,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="maxHitPoints"
-                    value={formData.maxHitPoints}
+                    value={sheet.maxHitPoints}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -96,7 +146,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="savingThrow"
-                    value={formData.savingThrow}
+                    value={sheet.savingThrow}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -105,31 +155,21 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="attackBonus"
-                    value={formData.attackBonus}
+                    value={sheet.attackBonus}
                     onChange={handleChange}
                   />
                 </Form.Group>
               </Col>
             </Row>
             <Button variant="primary" type="submit">
-              Submit
+              Save
             </Button>
-            <Link to="/" className="btn btn-warning">
-              Cancel
+            <Link to="/home" className="btn btn-warning">
+              Home
             </Link>
           </Form>
         </Container>
       );
     };
-
-    // return (
-    //     <div className="container-fluid">
-    //         <h1 className="display-5">Character Sheet Manager</h1>
-    //         <div className="d-flex flex-grow-1 justify-content-end">
-    //             <Link id="btnAdd" to="/" className="btn btn-info">Go to Landing</Link>
-    //         </div>
-    //     </div>
-    // );
-// }
 
 export default CharacterSheet;

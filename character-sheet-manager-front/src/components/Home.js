@@ -13,7 +13,7 @@ function Home() {
       return userSheetArray.map((usa, i) => 
         (
           <Col key={i} lg={4} md={6} sm={12}>
-            <Link to={`/sheets`}>
+            <Link to={`/sheet/${usa.sheetId}`}>
               <Card>
                 <Card.Body>
                   <Card.Title>Card {usa.sheetId}</Card.Title>
