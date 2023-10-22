@@ -8,8 +8,8 @@ function CharacterSheet() {
     const { id } = useParams();
 
     const [sheet, setSheet, loading] = useSheets(id);
-    const [username, setUsername] = useState([{ name: '' }]);
-    const [recipientId, setRecipientId] = useState([0]);
+    const [username, setUsername] = useState("");
+    const [recipientId, setRecipientId] = useState(0);
     const navigate = useNavigate();
     const [errors, setErrors] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -122,11 +122,8 @@ function CharacterSheet() {
       };
 
       const handleChangeUsername = (e) => {
-        const { name, value } = e.target;
-        setUsername((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
+        const { value } = e.target;
+        setUsername(value);
       };
     
       const handleSubmit = (e) => {
@@ -164,13 +161,15 @@ function CharacterSheet() {
       // Resolved [org.springframework.security.core.userdetails.UsernameNotFoundException: undefined not found.]
       const handleFindRecipient = async (e) => {
         e.preventDefault();
-        console.log("http://localhost:8080/api/v1/user/" + username.name)
-        const response = await fetch("http://localhost:8080/api/v1/user/" + username.name);
-
-        // I need a "not found" and a "searching error" error handling
+        console.log("http://localhost:8080/api/v1/user/" + username)
+        const response = await fetch("http://localhost:8080/api/v1/user/" + username);
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch username: ${response.status}`);
+          if (response.status === 404) {
+            throw new Error("User not found.");
+          } else {
+            throw new Error(`Failed to fetch username: ${response.status}`);
+          }
         }
 
         const data = await response.json();
@@ -203,7 +202,6 @@ function CharacterSheet() {
           .then(response => {
               if (response.ok) {
                 console.log("Successful share!")
-                  // navigate(`/sheet/${data.id}`);
               } else {
                   return response.json();
               }
