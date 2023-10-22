@@ -21,7 +21,7 @@ public class AppUserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<AppUser> findByUsername(@PathVariable String username) {
-        AppUser appUser = service.loadUserByUsername(username);
+        AppUser appUser = service.findByUsername(username);
         if (appUser == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

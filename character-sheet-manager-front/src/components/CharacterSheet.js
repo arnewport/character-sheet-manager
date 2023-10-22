@@ -14,7 +14,7 @@ function CharacterSheet() {
 
   // state
   const [sheet, setSheet, loading] = useSheets(id);
-  const [recepientName, setRecepientName] = useState("");
+  const [recipientName, setRecipientName] = useState("");
   const [recipientId, setRecipientId] = useState(0);
   const [errors, setErrors] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -71,12 +71,10 @@ function CharacterSheet() {
           [name]: value,
         });
       };
-
       
-
       const handleChangeRecipientName = (e) => {
         const { value } = e.target;
-        setRecepientName(value);
+        setRecipientName(value);
       };
     
       const handleSubmit = (e) => {
@@ -236,13 +234,13 @@ function CharacterSheet() {
               <Modal.Title>Confirm Share</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={(e) => {handleFindRecipient(e, recepientName, username, setRecipientId)}}>
-                <Form.Group controlId="recepientName">
+              <Form onSubmit={(e) => {handleFindRecipient(e, recipientName, username, setRecipientId)}}>
+                <Form.Group controlId="recipientName">
                   <Form.Label>Enter the username of the recipient</Form.Label>
                   <Form.Control
                     type="text"
-                    name="recepientName"
-                    value={recepientName ? recepientName : ""}
+                    name="recipientName"
+                    value={recipientName ? recipientName : ""}
                     onChange={handleChangeRecipientName}
                   />
                 </Form.Group>

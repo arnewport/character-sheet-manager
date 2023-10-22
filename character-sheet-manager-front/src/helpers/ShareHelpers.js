@@ -12,6 +12,9 @@ const handleFindRecipient = async (e, recepientName, username, setRecipientId) =
 
     const data = await response.json();
     if (data.username === username) {
+      // instead, fetch all user ids associated with this sheet in username
+      // if the user id is already associated, you cannot share
+      // "This user already has access to this character sheet."
         console.log("You cannot share a character sheet with yourself.");
         console.log("Please enter a username and search for a user.");
         return;

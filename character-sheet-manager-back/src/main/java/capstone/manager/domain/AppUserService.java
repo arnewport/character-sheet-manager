@@ -20,6 +20,10 @@ public class AppUserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public AppUser findByUsername(String username) {
+        return appUserRepository.findByUsername(username);
+    }
+
     @Override
     public AppUser loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser appUser = appUserRepository.findByUsername(username);
