@@ -92,7 +92,7 @@ public class SheetJdbcTemplateRepository implements SheetRepository {
                 where sheet_id = ?;
                 """;
 
-        jdbcTemplate.update(sql, id);
-        return jdbcTemplate.update(sql, id) > 0;
+        int deletions = jdbcTemplate.update(sql, id);
+        return deletions > 0;
     }
 }

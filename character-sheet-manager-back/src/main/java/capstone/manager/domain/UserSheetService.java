@@ -45,7 +45,7 @@ public class UserSheetService {
     }
 
     public boolean deleteBySheetId(int sheetId) {
-        return repository.deleteById(sheetId);
+        return repository.deleteBySheetId(sheetId);
     }
 
     public Result<UserSheet> validate(UserSheet userSheet) {

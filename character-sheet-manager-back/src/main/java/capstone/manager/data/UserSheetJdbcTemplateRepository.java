@@ -57,8 +57,8 @@ public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
                 where user_sheet_id = ?;
                 """;
 
-        jdbcTemplate.update(sql, id);
-        return jdbcTemplate.update(sql, id) > 0;
+        int deletions = jdbcTemplate.update(sql, id);
+        return deletions > 0;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
                 where sheet_id = ?;
                 """;
 
-        jdbcTemplate.update(sql, sheetId);
-        return jdbcTemplate.update(sql, sheetId) > 0;
+        int deletions = jdbcTemplate.update(sql, sheetId);
+        return deletions > 0;
     }
 }

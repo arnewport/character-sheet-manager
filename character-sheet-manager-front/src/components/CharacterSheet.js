@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import useSheets from '../hooks/useSheets';
 
@@ -10,6 +10,7 @@ function CharacterSheet() {
     const [sheet, setSheet, loading] = useSheets(id);
     const [username, setUsername] = useState([{ name: '' }]);
     const [recipientId, setRecipientId] = useState([0]);
+    const navigate = useNavigate();
     const [errors, setErrors] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
@@ -36,11 +37,14 @@ function CharacterSheet() {
           const config = {
               method: "DELETE",
           };
-          fetch("http://localhost:8080/api/v1/sheet/" + id, config)
+
+          const deleteAllUserSheets = async () => {
+
+            fetch("http://localhost:8080/api/v1/userSheet/deleteAll/" + id, config)
               .then(response => {
                   if (response.ok) {
                       // success
-                      // delete all associated instances here
+                      deleteSheet();
                   } else {
                       // failure
                       return Promise.reject(
@@ -49,7 +53,32 @@ function CharacterSheet() {
                   }
               }).catch(error => {
                   console.error(error);
-              });  
+              });
+
+          }
+
+
+          const deleteSheet = async () => {
+
+            fetch("http://localhost:8080/api/v1/sheet/" + id, config)
+              .then(response => {
+                  if (response.ok) {
+                      // success
+                      navigate("/home");
+                  } else {
+                      // failure
+                      return Promise.reject(
+                          new Error(`Unexpected status code ${response.status}`)
+                      );
+                  }
+              }).catch(error => {
+                  console.error(error);
+              });
+
+          }
+
+          deleteAllUserSheets();
+            
       }
       handleCloseDeleteModal();
       return;
@@ -132,6 +161,7 @@ function CharacterSheet() {
                   });
       };
 
+      // Resolved [org.springframework.security.core.userdetails.UsernameNotFoundException: undefined not found.]
       const handleFindRecipient = async (e) => {
         e.preventDefault();
         console.log("http://localhost:8080/api/v1/user/" + username.name)
