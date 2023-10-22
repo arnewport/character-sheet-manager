@@ -1,94 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import useSheets from '../hooks/useSheets';
+import handleDelete from '../helpers/DeleteHelpers';
+import { handleFindRecipient, handleShare } from '../helpers/ShareHelpers';
+import AuthContext from "../contexts/AuthContext";
 
 function CharacterSheet() {
 
-    const { id } = useParams();
+  // parameters
+  const { id } = useParams();
 
-    const [sheet, setSheet, loading] = useSheets(id);
-    const [username, setUsername] = useState("");
-    const [recipientId, setRecipientId] = useState(0);
-    const navigate = useNavigate();
-    const [errors, setErrors] = useState([]);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showShareModal, setShowShareModal] = useState(false);
+  // state
+  const [sheet, setSheet, loading] = useSheets(id);
+  const [recepientName, setRecepientName] = useState("");
+  const [recipientId, setRecipientId] = useState(0);
+  const [errors, setErrors] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  // context
+  const { user } = useContext(AuthContext);
+  const username = user.username;
+
+  // navigation
+  const navigate = useNavigate();
     
 
-    // DELETION
+  // Modal opening & closing functions
 
-    const handleDeleteClick = () => {
-      setShowDeleteModal(true);
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
   };
   
-    const handleCloseDeleteModal = () => {
-        setShowDeleteModal(false);
-    };
-
-    // okay, since I'm making the deletion at the sheet
-    // I need to pass on the user id to here as well
-    // we'll need to pull the UserSheet and check if the user is OWNER
-    // if owner, we delete the UserSheet and the sheet; navigate back to home
-    // if editor, we delete the UserSheet but not the sheet; we just navigate back to home afterwards
-
-    const handleDelete = () => {
-      if (id !== null) {
-          const config = {
-              method: "DELETE",
-          };
-
-          const deleteAllUserSheets = async () => {
-
-            fetch("http://localhost:8080/api/v1/userSheet/deleteAll/" + id, config)
-              .then(response => {
-                  if (response.ok) {
-                      // success
-                      deleteSheet();
-                  } else {
-                      // failure
-                      return Promise.reject(
-                          new Error(`Unexpected status code ${response.status}`)
-                      );
-                  }
-              }).catch(error => {
-                  console.error(error);
-              });
-
-          }
-
-
-          const deleteSheet = async () => {
-
-            fetch("http://localhost:8080/api/v1/sheet/" + id, config)
-              .then(response => {
-                  if (response.ok) {
-                      // success
-                      navigate("/home");
-                  } else {
-                      // failure
-                      return Promise.reject(
-                          new Error(`Unexpected status code ${response.status}`)
-                      );
-                  }
-              }).catch(error => {
-                  console.error(error);
-              });
-
-          }
-
-          deleteAllUserSheets();
-            
-      }
-      handleCloseDeleteModal();
-      return;
-  }
-
-  // SHARE
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+  };
 
   const handleShareClick = () => {
     setShowShareModal(true);
-};
+  };
 
   const handleCloseShareModal = () => {
     setShowShareModal(false);
@@ -121,9 +72,9 @@ function CharacterSheet() {
         });
       };
 
-      const handleChangeUsername = (e) => {
+      const handleChangeRecipientName = (e) => {
         const { value } = e.target;
-        setUsername(value);
+        setRecepientName(value);
       };
     
       const handleSubmit = (e) => {
@@ -158,68 +109,7 @@ function CharacterSheet() {
                   });
       };
 
-      // Resolved [org.springframework.security.core.userdetails.UsernameNotFoundException: undefined not found.]
-      const handleFindRecipient = async (e) => {
-        e.preventDefault();
-        console.log("http://localhost:8080/api/v1/user/" + username)
-        const response = await fetch("http://localhost:8080/api/v1/user/" + username);
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error("User not found.");
-          } else {
-            throw new Error(`Failed to fetch username: ${response.status}`);
-          }
-        }
-
-        const data = await response.json();
-        setRecipientId(data.id);
-      }
-
-      const handleShare = async (e) => {
-        e.preventDefault();
-
-        if (recipientId < 1) {
-          console.log("The recipient has either not been selected or was not found.")
-          console.log("Please enter a username and search for a user.")
-          return;
-        }
-
-        const config = {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            "userId": recipientId,
-            "sheetId": id,
-            "role": "EDITOR",
-            "status": "NONE"
-          })
-      }
-  
-      fetch("http://localhost:8080/api/v1/userSheet", config)
-          .then(response => {
-              if (response.ok) {
-                console.log("Successful share!")
-              } else {
-                  return response.json();
-              }
-          })
-          .then(errs => {
-              if (errs) {
-                  return Promise.reject(errs);
-              }
-          })
-          .catch(errs => {
-              if (errs.length) {
-                  setErrors(errs);
-              } else {
-                  setErrors([errs]);
-              }
-          });
-
-      }
+      
     
       if (loading) {
         return null;
@@ -330,7 +220,7 @@ function CharacterSheet() {
             </Modal.Header>
             <Modal.Body>Are you sure you want to delete this sheet?</Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-danger me-2" variant="primary" onClick={handleDelete}>
+              <Button className="btn btn-danger me-2" variant="primary" onClick={() => {handleDelete(id, navigate)}}>
                   Delete
               </Button>
               <Button className="btn btn-warning" variant="secondary" onClick={handleCloseDeleteModal}>
@@ -344,21 +234,21 @@ function CharacterSheet() {
               <Modal.Title>Confirm Share</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={handleFindRecipient}>
-                <Form.Group controlId="username">
+              <Form onSubmit={(e) => {handleFindRecipient(e, recepientName, username, setRecipientId)}}>
+                <Form.Group controlId="recepientName">
                   <Form.Label>Enter the username of the recipient</Form.Label>
                   <Form.Control
                     type="text"
-                    name="username"
-                    value={username ? username.name : ""}
-                    onChange={handleChangeUsername}
+                    name="recepientName"
+                    value={recepientName ? recepientName : ""}
+                    onChange={handleChangeRecipientName}
                   />
                 </Form.Group>
                 <Button type="submit">Submit</Button>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-danger me-2" variant="primary" onClick={handleShare}>
+              <Button className="btn btn-danger me-2" variant="primary" onClick={(e) => {handleShare(e, recipientId, id, setErrors)}}>
                   Delete
               </Button>
               <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>

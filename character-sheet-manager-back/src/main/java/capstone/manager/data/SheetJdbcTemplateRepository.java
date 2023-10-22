@@ -80,7 +80,8 @@ public class SheetJdbcTemplateRepository implements SheetRepository {
             sheet.getArmorClass(),
             sheet.getSavingThrow(),
             sheet.getThac0(),
-            sheet.getAttackBonus()) > 0;
+            sheet.getAttackBonus(),
+                sheet.getId()) > 0;
         }
 
     @Override
