@@ -1,34 +1,28 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
-// import useSheet from '../hooks/useSheet';
-
-const INITIAL_SHEET = {
-        playerName: '',
-        characterName: '',
-        curHitPoints: 0,
-        maxHitPoints: 0,
-        armorClass: 0,
-        savingThrow: 0,
-        thac0: 0,
-        attackBonus: 0
-}
+import useSheets from '../hooks/useSheets';
 
 function CharacterSheet() {
 
-    const [sheet, setSheet] = useState(INITIAL_SHEET);
-    const [errors, setErrors] = useState([]);
     const { id } = useParams();
+
+    const [sheet, setSheet, loading] = useSheets(id);
+    const [username, setUsername] = useState([{ name: '' }]);
+    const [recipientId, setRecipientId] = useState([0]);
+    const [errors, setErrors] = useState([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
+    
 
     // DELETION
 
-    const handleDeleteClick = (agentId) => {
-      setId(agentId);
-      setShowModal(true);
+    const handleDeleteClick = () => {
+      setShowDeleteModal(true);
   };
   
-    const handleCloseModal = () => {
-        setShowModal(false);
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
     };
 
     // okay, since I'm making the deletion at the sheet
@@ -53,16 +47,23 @@ function CharacterSheet() {
                           new Error(`Unexpected status code ${response.status}`)
                       );
                   }
-              }).then(setId)
-              .catch(error => {
+              }).catch(error => {
                   console.error(error);
               });  
       }
-      handleCloseModal();
+      handleCloseDeleteModal();
       return;
   }
 
-  //
+  // SHARE
+
+  const handleShareClick = () => {
+    setShowShareModal(true);
+};
+
+  const handleCloseShareModal = () => {
+    setShowShareModal(false);
+  };
 
     useEffect(() => {
       if (id) {
@@ -89,6 +90,14 @@ function CharacterSheet() {
           ...sheet,
           [name]: value,
         });
+      };
+
+      const handleChangeUsername = (e) => {
+        const { name, value } = e.target;
+        setUsername((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
       };
     
       const handleSubmit = (e) => {
@@ -122,7 +131,72 @@ function CharacterSheet() {
                       }
                   });
       };
+
+      const handleFindRecipient = async (e) => {
+        e.preventDefault();
+        console.log("http://localhost:8080/api/v1/user/" + username.name)
+        const response = await fetch("http://localhost:8080/api/v1/user/" + username.name);
+
+        // I need a "not found" and a "searching error" error handling
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch username: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setRecipientId(data.id);
+      }
+
+      const handleShare = async (e) => {
+        e.preventDefault();
+
+        if (recipientId < 1) {
+          console.log("The recipient has either not been selected or was not found.")
+          console.log("Please enter a username and search for a user.")
+          return;
+        }
+
+        const config = {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            "userId": recipientId,
+            "sheetId": id,
+            "role": "EDITOR",
+            "status": "NONE"
+          })
+      }
+  
+      fetch("http://localhost:8080/api/v1/userSheet", config)
+          .then(response => {
+              if (response.ok) {
+                console.log("Successful share!")
+                  // navigate(`/sheet/${data.id}`);
+              } else {
+                  return response.json();
+              }
+          })
+          .then(errs => {
+              if (errs) {
+                  return Promise.reject(errs);
+              }
+          })
+          .catch(errs => {
+              if (errs.length) {
+                  setErrors(errs);
+              } else {
+                  setErrors([errs]);
+              }
+          });
+
+      }
     
+      if (loading) {
+        return null;
+      } 
+
       return (
         <Container>
           <h1>Character Sheet</h1>
@@ -134,7 +208,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="text"
                     name="playerName"
-                    value={sheet.playerName}
+                    value={sheet ? sheet.playerName : ''}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -143,7 +217,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="curHitPoints"
-                    value={sheet.curHitPoints}
+                    value={sheet ? sheet.curHitPoints : 0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -152,7 +226,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="armorClass"
-                    value={sheet.armorClass}
+                    value={sheet ? sheet.armorClass : 0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -161,7 +235,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="thac0"
-                    value={sheet.thac0}
+                    value={sheet ? sheet.thac0 : 0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -172,7 +246,7 @@ function CharacterSheet() {
                     <Form.Control
                         type="text"
                         name="characterName"
-                        value={sheet.characterName}
+                        value={sheet ? sheet.characterName : ''}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -181,7 +255,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="maxHitPoints"
-                    value={sheet.maxHitPoints}
+                    value={sheet ? sheet.maxHitPoints : 0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -190,7 +264,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="savingThrow"
-                    value={sheet.savingThrow}
+                    value={sheet ? sheet.savingThrow : 0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -199,7 +273,7 @@ function CharacterSheet() {
                   <Form.Control
                     type="number"
                     name="attackBonus"
-                    value={sheet.attackBonus}
+                    value={sheet ? sheet.attackBonus : 0}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -211,30 +285,59 @@ function CharacterSheet() {
             <Link to="/home" className="btn btn-warning">
               Home
             </Link>
-            <Button>
+            <Button onClick={handleShareClick}>
               Share
             </Button>
             <Button>
               Refresh
             </Button>
-            <Button onClick={() => handleDeleteClick(id)}>
+            <Button onClick={handleDeleteClick}>
               Delete
             </Button>
           </Form>
-          <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                <Modal.Title>Confirm Deletion</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to delete this sheet?</Modal.Body>
-                <Modal.Footer>
-                <Button className="btn btn-danger me-2" variant="primary" onClick={handleDelete}>
-                    Delete
-                </Button>
-                <Button className="btn btn-warning" variant="secondary" onClick={handleCloseModal}>
-                    Cancel
-                </Button>
-                </Modal.Footer>
-            </Modal>
+
+          <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Are you sure you want to delete this sheet?</Modal.Body>
+            <Modal.Footer>
+              <Button className="btn btn-danger me-2" variant="primary" onClick={handleDelete}>
+                  Delete
+              </Button>
+              <Button className="btn btn-warning" variant="secondary" onClick={handleCloseDeleteModal}>
+                  Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal show={showShareModal} onHide={handleCloseShareModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Share</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form onSubmit={handleFindRecipient}>
+                <Form.Group controlId="username">
+                  <Form.Label>Enter the username of the recipient</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="username"
+                    value={username ? username.name : ""}
+                    onChange={handleChangeUsername}
+                  />
+                </Form.Group>
+                <Button type="submit">Submit</Button>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button className="btn btn-danger me-2" variant="primary" onClick={handleShare}>
+                  Delete
+              </Button>
+              <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>
+                  Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Container>
       );
     };

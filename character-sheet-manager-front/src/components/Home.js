@@ -109,7 +109,6 @@ function Home() {
     fetch("http://localhost:8080/api/v1/userSheet", config)
         .then(response => {
             if (response.ok) {
-                debugger;
                 navigate(`/sheet/${data.id}`);
             } else {
                 return response.json();

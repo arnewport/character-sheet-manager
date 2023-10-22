@@ -1,18 +1,15 @@
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../contexts/AuthContext";
+import { useEffect, useState } from "react";
 
 const useSheets = (sheetId) => {
     
     // variables
     const URL = "http://localhost:8080/api/v1/sheet/";
-    // const { user } = useContext(AuthContext);
-    // const userId = user.userId;
 
     // state
     const [loading, setLoading] = useState(true);
     const [sheet, setSheet] = useState([]);
 
-    // fetch array of sheets connected to the user
+    // fetch sheet matching sheetId
     useEffect(() => {
         const fetchSheet = async () => {
 
@@ -39,7 +36,7 @@ const useSheets = (sheetId) => {
             fetchSheet();
         }, []);
 
-    return [sheet, loading];
+    return [sheet, setSheet, loading];
 }
 
 export default useSheets;

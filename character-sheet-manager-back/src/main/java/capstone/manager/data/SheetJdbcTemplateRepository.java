@@ -68,7 +68,8 @@ public class SheetJdbcTemplateRepository implements SheetRepository {
                 armor_class = ?,
                 saving_throw = ?,
                 thac0 = ?,
-                attack_bonus = ?;
+                attack_bonus = ?
+                where sheet_id = ?;
                 """;
 
         return jdbcTemplate.update(sql,
