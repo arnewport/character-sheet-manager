@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import useSheets from '../hooks/useSheets';
 import handleDelete from '../helpers/DeleteHelpers';
 import { handleFindRecipient, handleShare } from '../helpers/ShareHelpers';
+import { refreshSheet } from '../helpers/RefreshHelpers';
 import AuthContext from "../contexts/AuthContext";
 
 function CharacterSheet() {
@@ -28,7 +29,6 @@ function CharacterSheet() {
     
 
   // Modal opening & closing functions
-
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
   };
@@ -62,7 +62,7 @@ function CharacterSheet() {
                           console.error(error);
                       });
                   }
-              }, [id]);
+              }, [id, setSheet]);
     
       const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,6 +71,8 @@ function CharacterSheet() {
           [name]: value,
         });
       };
+
+      
 
       const handleChangeRecipientName = (e) => {
         const { value } = e.target;
@@ -206,7 +208,7 @@ function CharacterSheet() {
             <Button onClick={handleShareClick}>
               Share
             </Button>
-            <Button>
+            <Button onClick={() => {refreshSheet(id, setSheet)}}>
               Refresh
             </Button>
             <Button onClick={handleDeleteClick}>
@@ -249,7 +251,7 @@ function CharacterSheet() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-danger me-2" variant="primary" onClick={(e) => {handleShare(e, recipientId, id, setErrors)}}>
-                  Delete
+                  Share
               </Button>
               <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>
                   Cancel
