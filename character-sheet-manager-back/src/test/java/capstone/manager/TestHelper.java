@@ -2,10 +2,25 @@ package capstone.manager;
 
 import capstone.manager.domain.Result;
 import capstone.manager.models.AppUser;
+import capstone.manager.models.Sheet;
 
 import java.util.List;
 
 public class TestHelper {
+
+    public static Sheet makeSheet(int id) {
+        return new Sheet (
+                id,
+                "Player " + id,
+                "Character " + id,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
+    }
 
     public static AppUser makeAppUser(int id) {
         return new AppUser(
