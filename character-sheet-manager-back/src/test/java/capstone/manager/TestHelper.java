@@ -3,6 +3,7 @@ package capstone.manager;
 import capstone.manager.domain.Result;
 import capstone.manager.models.AppUser;
 import capstone.manager.models.Sheet;
+import capstone.manager.models.UserSheet;
 
 import java.util.List;
 
@@ -20,6 +21,16 @@ public class TestHelper {
                 0,
                 0
         );
+    }
+
+    public static UserSheet makeUserSheet(int id, int userId, int sheetId) {
+            return new UserSheet (
+                    id,
+                    userId,
+                    sheetId,
+                    "OWNER",
+                    "NONE"
+            );
     }
 
     public static AppUser makeAppUser(int id) {

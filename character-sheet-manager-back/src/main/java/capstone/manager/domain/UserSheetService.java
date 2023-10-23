@@ -17,7 +17,7 @@ public class UserSheetService {
     }
 
     public List<UserSheet> findSheetsByUserId(int userId) {
-        return repository.findSheetsByUserId(userId);
+        return repository.findUserSheetsByUserId(userId);
     }
 
     public List<Integer> findUserIdsBySheetId(int sheetId) {

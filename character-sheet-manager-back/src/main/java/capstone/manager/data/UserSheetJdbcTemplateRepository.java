@@ -20,7 +20,7 @@ public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
     }
 
     @Override
-    public List<UserSheet> findSheetsByUserId(int userId) {
+    public List<UserSheet> findUserSheetsByUserId(int userId) {
         final String sql = """
                 select *
                 from user_sheet
@@ -60,6 +60,7 @@ public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
         return userSheet;
     }
 
+    // current unused; will be implemented in the future
     @Override
     @Transactional
     public boolean deleteById(int id) {
