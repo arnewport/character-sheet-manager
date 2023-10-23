@@ -52,6 +52,7 @@ public class UserSheetService {
         return repository.deleteBySheetId(sheetId);
     }
 
+    // TODO: expand validation
     public Result<UserSheet> validate(UserSheet userSheet) {
         Result<UserSheet> result = new Result<>();
         if (userSheet == null) {
