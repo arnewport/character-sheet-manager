@@ -21,8 +21,8 @@ public class UserSheetController {
     }
 
     @GetMapping("/{userId}")
-    public List<UserSheet> findSheetsByUserId(@PathVariable int userId) {
-        return service.findSheetsByUserId(userId);
+    public List<UserSheet> findUserSheetsByUserId(@PathVariable int userId) {
+        return service.findUserSheetsByUserId(userId);
     }
 
     @GetMapping("/user/{sheetId}")

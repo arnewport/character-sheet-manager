@@ -11,8 +11,6 @@ import static capstone.manager.TestHelper.makeResult;
 import static capstone.manager.TestHelper.makeSheet;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)

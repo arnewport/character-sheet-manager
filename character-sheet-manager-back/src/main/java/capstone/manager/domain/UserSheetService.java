@@ -16,7 +16,7 @@ public class UserSheetService {
         this.repository = repository;
     }
 
-    public List<UserSheet> findSheetsByUserId(int userId) {
+    public List<UserSheet> findUserSheetsByUserId(int userId) {
         return repository.findUserSheetsByUserId(userId);
     }
 
@@ -44,6 +44,7 @@ public class UserSheetService {
         return result;
     }
 
+    // current unused; will be implemented in the future
     public boolean deleteById(int id) {
         return repository.deleteById(id);
     }

@@ -30,7 +30,7 @@ public class UserSheetJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindSheetsByUserId() {
-        ArrayList<UserSheet> expected = new ArrayList<UserSheet>();
+        List<UserSheet> expected = new ArrayList<UserSheet>();
         expected.add(makeUserSheet(1, 1, 1));
         List<UserSheet> actual = repository.findUserSheetsByUserId(1);
         assertEquals(expected, actual);
@@ -38,7 +38,7 @@ public class UserSheetJdbcTemplateRepositoryTest {
 
     @Test
     void shouldNotFindSheetsByUserId() {
-        ArrayList<UserSheet> expected = new ArrayList<>();
+        List<UserSheet> expected = new ArrayList<>();
         expected.add(makeUserSheet(99, 99, 99));
         List<UserSheet> actual = repository.findUserSheetsByUserId(1);
         assertNotEquals(expected, actual);
@@ -46,7 +46,7 @@ public class UserSheetJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindUserIdsBySheetId() {
-        ArrayList<Integer> expected = new ArrayList<>();
+        List<Integer> expected = new ArrayList<>();
         expected.add(1);
         List<Integer> actual = repository.findUserIdsBySheetId(1);
         assertEquals(expected, actual);
@@ -54,7 +54,7 @@ public class UserSheetJdbcTemplateRepositoryTest {
 
     @Test
     void shouldNotFindUserIdsBySheetId() {
-        ArrayList<Integer> expected = new ArrayList<>();
+        List<Integer> expected = new ArrayList<>();
         expected.add(99);
         List<Integer> actual = repository.findUserIdsBySheetId(1);
         assertNotEquals(expected, actual);
