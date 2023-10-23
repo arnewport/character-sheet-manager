@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row, Button } from 'react-bootstrap';
 import useUserSheets from "../hooks/useUserSheets";
 import { logout } from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
@@ -8,45 +8,60 @@ import { createNewSheet, createNewUserSheet } from "../helpers/CreateHelpers";
 
 function Home() {
 
-  const [userSheetArray, loading] = useUserSheets();
+  // state
+  const [userSheetArray, setUserSheetArray, loading] = useUserSheets();
   const [errors, setErrors] = useState([]);
 
+  // navigation
   const navigate = useNavigate();
 
+  // context
   const { user } = useContext(AuthContext);
   const userId = user.userId;
 
-    const generateCards = () => {
+  //
+  // useEffect(() => {
+  //   if (refreshData) {
+  //     // Make an API call to refresh data here
+  //     // For example, fetch user sheets or perform any other data retrieval operation
+  //     // Update the userSheetArray state variable with the new data
+  //     // After the data is refreshed, you can set refreshData back to false
+  //     setRefreshData(false);
+  //   }
+  // }, [refreshData]);
 
-      const cards = userSheetArray.map((usa, i) => 
-        (
-          <Col key={i} lg={4} md={6} sm={12}>
-            <Link to={`/sheet/${usa.sheetId}`}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Card {usa.sheetId}</Card.Title>
-                  <Card.Text>Card description here.</Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        ));
+  // row contents
+  const generateCards = () => {
 
-        cards.push(
-          <Col key={cards.length} lg={4} md={6} sm={12}>
-            <Link>
-              <Card onClick={() => {createNewSheet(userId, navigate, setErrors)}}>
-                <Card.Body>
-                  <Card.Title>New Sheet</Card.Title>
-                  <Card.Text>Click to create a new sheet</Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        )
+  const cards = userSheetArray.map((usa, i) => 
+    (
+      <Col key={i} lg={4} md={6} sm={12}>
+        <Link to={`/sheet/${usa.sheetId}`}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Card {usa.sheetId}</Card.Title>
+              <Card.Text>Card description here.</Card.Text>
+            </Card.Body>
+          </Card>
+        </Link>
+      </Col>
+    ));
 
-      return cards;
-    }
+    cards.push(
+      <Col key={cards.length} lg={4} md={6} sm={12}>
+        <Link>
+          <Card onClick={() => {createNewSheet(userId, navigate, setErrors)}}>
+            <Card.Body>
+              <Card.Title>New Sheet</Card.Title>
+              <Card.Text>Click to create a new sheet</Card.Text>
+            </Card.Body>
+          </Card>
+        </Link>
+      </Col>
+    )
+
+  return cards;
+}
 
   if (loading) {
     return null;
@@ -57,7 +72,12 @@ function Home() {
             <div className="container-fluid">
                 <h1 className="display-5">Character Sheet Manager</h1>
                 <div className="d-flex flex-grow-1 justify-content-end">
-                    <Link to="/" className="btn btn-info" onClick={logout}>Log Out</Link>
+                  {/* <Button onClick={() => {setUserSheetArray([])}}>
+                    Refresh
+                  </Button> */}
+                  <Link to="/" className="btn btn-info" onClick={logout}>
+                    Log Out
+                  </Link>
                 </div>
                 <Row>
                     {generateCards()}

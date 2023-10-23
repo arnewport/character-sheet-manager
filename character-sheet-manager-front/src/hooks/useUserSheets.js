@@ -37,9 +37,9 @@ const useUserSheets = () => {
             }
             
             fetchSheetsByUser();
-        }, []);
+        }, [userSheetArray]);
 
-    return [userSheetArray, loading];
+    return [userSheetArray, setUserSheetArray, loading];
 }
 
 export default useUserSheets;
