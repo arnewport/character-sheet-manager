@@ -19,17 +19,6 @@ function Home() {
   const { user } = useContext(AuthContext);
   const userId = user.userId;
 
-  //
-  // useEffect(() => {
-  //   if (refreshData) {
-  //     // Make an API call to refresh data here
-  //     // For example, fetch user sheets or perform any other data retrieval operation
-  //     // Update the userSheetArray state variable with the new data
-  //     // After the data is refreshed, you can set refreshData back to false
-  //     setRefreshData(false);
-  //   }
-  // }, [refreshData]);
-
   // row contents
   const generateCards = () => {
 
@@ -37,7 +26,7 @@ function Home() {
     (
       <Col key={i} lg={4} md={6} sm={12}>
         <Link to={`/sheet/${usa.sheetId}`}>
-          <Card>
+          <Card className="mb-5 mt-5 h-75">
             <Card.Body>
               <Card.Title>Card {usa.sheetId}</Card.Title>
               <Card.Text>Card description here.</Card.Text>
@@ -50,7 +39,7 @@ function Home() {
     cards.push(
       <Col key={cards.length} lg={4} md={6} sm={12}>
         <Link>
-          <Card onClick={() => {createNewSheet(userId, navigate, setErrors)}}>
+          <Card onClick={() => {createNewSheet(userId, navigate, setErrors)}} className="mb-5 mt-5 h-75">
             <Card.Body>
               <Card.Title>New Sheet</Card.Title>
               <Card.Text>Click to create a new sheet</Card.Text>

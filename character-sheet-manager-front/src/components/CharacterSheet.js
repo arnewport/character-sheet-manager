@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, ButtonGroup, Modal } from 'react-bootstrap';
 import useSheets from '../hooks/useSheets';
 import handleDelete from '../helpers/DeleteHelpers';
 import { handleFindRecipient, handleShare } from '../helpers/ShareHelpers';
@@ -191,22 +191,22 @@ function CharacterSheet() {
                   />
                 </Form.Group>
               </Col>
-            </Row>
-            <Button variant="primary" type="submit">
+            </Row> 
+            <Button type="submit" className="btn btn-primary me-2 mt-3">
               Save
             </Button>
-            <Link to="/home" className="btn btn-warning">
+            <Link to="/home" className="btn btn-warning me-2 mt-3">
               Home
             </Link>
-            <Button onClick={handleShareClick}>
+            <Button onClick={handleShareClick}  className="btn btn-success me-2 mt-3">
               Share
             </Button>
-            <Button onClick={() => {refreshSheet(id, setSheet)}}>
+            <Button onClick={() => {refreshSheet(id, setSheet)}}  className="btn btn-info me-2 mt-3">
               Refresh
             </Button>
-            <Button onClick={handleDeleteClick}>
+            <Button onClick={handleDeleteClick}  className="btn btn-danger me-2 mt-3">
               Delete
-            </Button>
+            </Button>           
           </Form>
 
           <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
@@ -239,11 +239,11 @@ function CharacterSheet() {
                     onChange={handleChangeRecipientName}
                   />
                 </Form.Group>
-                <Button type="submit">Submit</Button>
+                <Button className="btn btn-info" type="submit">Submit</Button>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-danger me-2" variant="primary" onClick={(e) => {handleShare(e, recipientId, id, setErrors)}}>
+              <Button className="btn btn-success me-2" variant="primary" onClick={(e) => {handleShare(e, recipientId, id, setErrors)}}>
                   Share
               </Button>
               <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>

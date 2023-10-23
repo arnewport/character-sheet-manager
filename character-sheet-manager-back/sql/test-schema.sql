@@ -1,6 +1,6 @@
-drop database if exists character_sheet;
-create database character_sheet;
-use character_sheet;
+drop database if exists character_sheet_test;
+create database character_sheet_test;
+use character_sheet_test;
 
 -- tables
 create table sheet (
@@ -40,25 +40,6 @@ create table app_user_role (
         references app_role(app_role_id)
 );
 
--- data
-insert into sheet values
-	(1, 'Player', 'Character', 10, 20, 16, 14, 19, 0);
-
-insert into app_role (`name`) values
-    ('USER'),
-    ('ADMIN');
-
--- passwords are set to "P@ssw0rd!"
-insert into app_user (username, password_hash, enabled)
-    values
-    ('one@user.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1),
-    ('two@user.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 1);
-
-insert into app_user_role
-    values
-    (1, 1),
-    (2, 1);
-
 -- bridge table
     
 create table user_sheet (
@@ -74,8 +55,42 @@ create table user_sheet (
         foreign key (sheet_id)
         references sheet(sheet_id)
 );
+    
+delimiter //
+create procedure set_known_good_state()
+begin
+	delete from user_sheet;
+	delete from app_user_role;
+    delete from app_role;
+    alter table app_role auto_increment = 1;
+    delete from app_user;
+    alter table app_user auto_increment = 1;
+	delete from sheet;
+    alter table sheet auto_increment = 1;
+    
+    
+	insert into sheet values
+		(1, 'Player 1', 'Character 1', 0, 0, 0, 0, 0, 0),
+        (2, 'Player 2', 'Character 2', 0, 0, 0, 0, 0, 0);
+        
+	insert into app_role (`name`) values
+		('TEST_ROLE_1'),
+		('TEST_ROLE_2');
 
--- bridge data
+	-- passwords are set to "P@ssw0rd!"
+	insert into app_user (username, password_hash, enabled)
+		values
+		('appuser1@app.com', 'password_hash_1', 1),
+		('appuser2@app.com', 'password_hash_2', 1);
 
-insert into user_sheet values 
-	(1, 1, 1, "OWNER", "NONE");
+	insert into app_user_role
+		values
+		(1, 1),
+		(2, 1);
+        
+	insert into user_sheet values 
+		(1, 1, 1, "OWNER", "NONE"),
+        (2, 2, 2, "OWNER", "NONE");
+    
+end //
+delimiter ;

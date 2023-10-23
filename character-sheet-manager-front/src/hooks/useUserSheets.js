@@ -37,7 +37,7 @@ const useUserSheets = () => {
             }
             
             fetchSheetsByUser();
-        }, [userSheetArray]);
+        }, []);
 
     return [userSheetArray, setUserSheetArray, loading];
 }
