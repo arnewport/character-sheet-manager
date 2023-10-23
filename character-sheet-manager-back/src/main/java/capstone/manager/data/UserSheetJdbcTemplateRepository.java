@@ -31,6 +31,17 @@ public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
     }
 
     @Override
+    public List<Integer> findUserIdsBySheetId(int sheetId) {
+        final String sql = """
+                select user_id
+                from user_sheet
+                where sheet_id = ?;
+                """;
+
+        return jdbcTemplate.queryForList(sql, Integer.class, sheetId);
+    }
+
+    @Override
     @Transactional
     public UserSheet create(UserSheet userSheet) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)

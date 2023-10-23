@@ -25,6 +25,11 @@ public class UserSheetController {
         return service.findSheetsByUserId(userId);
     }
 
+    @GetMapping("/user/{sheetId}")
+    public List<Integer> findUserIdsBySheetId(@PathVariable int sheetId) {
+        return service.findUserIdsBySheetId(sheetId);
+    }
+
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody UserSheet userSheet) {
         Result<UserSheet> result = service.create(userSheet);

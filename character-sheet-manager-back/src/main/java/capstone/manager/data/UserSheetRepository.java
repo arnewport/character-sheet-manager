@@ -7,8 +7,8 @@ import java.util.List;
 public interface UserSheetRepository {
 
     List<UserSheet> findSheetsByUserId(int userId);
+    List<Integer> findUserIdsBySheetId(int sheetId);
     UserSheet create(UserSheet userSheet);
     boolean deleteById(int id);
     boolean deleteBySheetId(int sheetId);
-
 }

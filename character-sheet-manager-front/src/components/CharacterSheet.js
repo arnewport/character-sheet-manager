@@ -5,7 +5,6 @@ import useSheets from '../hooks/useSheets';
 import handleDelete from '../helpers/DeleteHelpers';
 import { handleFindRecipient, handleShare } from '../helpers/ShareHelpers';
 import { refreshSheet } from '../helpers/RefreshHelpers';
-import AuthContext from "../contexts/AuthContext";
 
 function CharacterSheet() {
 
@@ -19,10 +18,6 @@ function CharacterSheet() {
   const [errors, setErrors] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-
-  // context
-  const { user } = useContext(AuthContext);
-  const username = user.username;
 
   // navigation
   const navigate = useNavigate();
@@ -234,7 +229,7 @@ function CharacterSheet() {
               <Modal.Title>Confirm Share</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={(e) => {handleFindRecipient(e, recipientName, username, setRecipientId)}}>
+              <Form onSubmit={(e) => {handleFindRecipient(e, recipientName, id, setRecipientId)}}>
                 <Form.Group controlId="recipientName">
                   <Form.Label>Enter the username of the recipient</Form.Label>
                   <Form.Control

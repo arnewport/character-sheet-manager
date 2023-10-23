@@ -20,6 +20,10 @@ public class UserSheetService {
         return repository.findSheetsByUserId(userId);
     }
 
+    public List<Integer> findUserIdsBySheetId(int sheetId) {
+        return repository.findUserIdsBySheetId(sheetId);
+    }
+
     public Result<UserSheet> create(UserSheet userSheet) {
 
         Result<UserSheet> result = validate(userSheet);

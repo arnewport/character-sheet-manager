@@ -1,27 +1,39 @@
-const handleFindRecipient = async (e, recepientName, username, setRecipientId) => {
+const handleFindRecipient = async (e, recepientName, id, setRecipientId) => {
     e.preventDefault();
     const response = await fetch("http://localhost:8080/api/v1/user/" + recepientName);
 
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error("User not found.");
+        console.log("User not found");
+        return;
       } else {
         throw new Error(`Failed to fetch username: ${response.status}`);
       }
     }
 
     const data = await response.json();
-    if (data.username === username) {
-      // instead, fetch all user ids associated with this sheet in username
-      // if the user id is already associated, you cannot share
-      // "This user already has access to this character sheet."
-        console.log("You cannot share a character sheet with yourself.");
+    const userIds = await findUserIdsBySheetId(id);
+    if (userIds.includes(data.id)) {
+        console.log("This user already has access to this character sheet.");
         console.log("Please enter a username and search for a user.");
         return;
     }
     setRecipientId(data.id);
   }
 
+  const findUserIdsBySheetId = async (sheetId) => {
+    const response = await fetch("http://localhost:8080/api/v1/userSheet/user/" + sheetId);
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch user ids: ${response.status}`);
+    }
+
+    const userIds = await response.json();
+    return userIds;
+    
+  }
+
+  // I don't think we need to worry about preventing the default event here
   const handleShare = async (e, recipientId, id, setErrors) => {
     e.preventDefault();
 
