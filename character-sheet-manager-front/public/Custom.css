@@ -1,0 +1,17 @@
+.btn {
+    margin-top: 0.75rem;
+    margin-right: 0.5rem;
+}
+
+.link {
+    text-decoration: none;
+    text-align: center;
+}
+
+.link:hover {
+    color: #1F51FF;
+}
+
+.form-control {
+    text-align: center;
+}

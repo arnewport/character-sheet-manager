@@ -1,8 +1,8 @@
 const createNewSheet = async (userId, navigate) => {
 
     const INITIAL_SHEET = {
-      playerName: '',
-      characterName: '',
+      playerName: 'Player',
+      characterName: 'Character',
       curHitPoints: 0,
       maxHitPoints: 0,
       armorClass: 0,

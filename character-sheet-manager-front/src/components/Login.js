@@ -65,12 +65,12 @@ function Login() {
             />
           </div>
           <div>
-            <Link to="/" className="btn btn-secondary">
+            <button type="submit" className="btn btn-primary">
+                Log in
+            </button>
+            <Link to="/" className="btn btn-warning">
               Cancel
             </Link>
-            <button type="submit" className="btn btn-primary">
-              Log in
-            </button>
           </div>
         </div>
       </form>

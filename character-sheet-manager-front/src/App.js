@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Landing from "./components/Landing";
 import Home from "./components/Home";
@@ -74,18 +73,6 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/home" element={renderWithAuthority(Home, "USER")} />
             <Route path="/sheet/:id" element={renderWithAuthority(CharacterSheet, "USER")} />
-            {/* <Route path="/" element={!user ? <Login /> : <Navigate to="/" replace={true} />} />
-            <Route path="/" element={renderWithAuthority(Landing, "ADMIN", "USER")} /> */}
-            {/* <Route path="/home" element={<Home />} />
-            <Route path="/sheets" element={<CharacterSheet />} /> */}
-            {/* <Route
-              path="/agents/add"
-              element={<AgentForm />}
-            />
-            <Route
-              path="/agents/edit/:id"
-              element={<AgentForm />}
-            /> */}
             <Route path="/error" element={<Error />}/>
             <Route path="*" element={<NotFound />} />
           </Routes>

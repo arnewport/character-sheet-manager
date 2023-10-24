@@ -34,7 +34,7 @@ const useSheets = (sheetId) => {
             }
             
             fetchSheet();
-        }, []);
+        }, [sheetId]);
 
     return [sheet, setSheet, loading];
 }

@@ -113,8 +113,8 @@ function CharacterSheet() {
 
       return (
         <Container>
-          <h1>Character Sheet</h1>
-          <Form onSubmit={handleSubmit}>
+          <h1 className="text-center">Character Sheet</h1>
+          <Form className="text-center fw-bold" onSubmit={handleSubmit}>
             <Row>
               <Col md={6}>
                 <Form.Group controlId="playerName">
@@ -193,19 +193,19 @@ function CharacterSheet() {
                 </Form.Group>
               </Col>
             </Row> 
-            <Button type="submit" className="btn btn-primary me-2 mt-3">
+            <Button type="submit" className="btn btn-primary btn-lg">
               Save
             </Button>
-            <Link to="/home" className="btn btn-warning me-2 mt-3">
+            <Link to="/home" className="btn btn-warning btn-lg">
               Cancel
             </Link>
-            <Button onClick={handleShareClick}  className="btn btn-success me-2 mt-3">
+            <Button onClick={handleShareClick}  className="btn btn-success btn-lg">
               Share
             </Button>
-            <Button onClick={() => {refreshSheet(id, setSheet)}}  className="btn btn-info me-2 mt-3">
+            <Button onClick={() => {refreshSheet(id, setSheet)}}  className="btn btn-info btn-lg">
               Refresh
             </Button>
-            <Button onClick={handleDeleteClick}  className="btn btn-danger me-2 mt-3">
+            <Button onClick={handleDeleteClick}  className="btn btn-danger btn-lg">
               Delete
             </Button>           
           </Form>
@@ -216,10 +216,10 @@ function CharacterSheet() {
             </Modal.Header>
             <Modal.Body>Are you sure you want to delete this sheet?</Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-danger me-2" variant="primary" onClick={() => {handleDelete(id, navigate)}}>
+              <Button className="btn btn-danger me-2 btn-lg" variant="primary" onClick={() => {handleDelete(id, navigate)}}>
                   Delete
               </Button>
-              <Button className="btn btn-warning" variant="secondary" onClick={handleCloseDeleteModal}>
+              <Button className="btn btn-warning btn-lg" variant="secondary" onClick={handleCloseDeleteModal}>
                   Cancel
               </Button>
             </Modal.Footer>
@@ -246,10 +246,10 @@ function CharacterSheet() {
                 
               </Modal.Body>
               <Modal.Footer>
-                <Button className="btn btn-success me-2" variant="primary" type="submit">
+                <Button className="btn btn-success me-2 btn-lg" variant="primary" type="submit">
                     Share
                 </Button>
-                <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>
+                <Button className="btn btn-warning btn-lg" variant="secondary" onClick={handleCloseShareModal}>
                     Cancel
                 </Button>
               </Modal.Footer>

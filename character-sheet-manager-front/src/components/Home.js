@@ -24,7 +24,7 @@ function Home() {
   const cards = userSheetArray.map((usa, i) => 
     (
       <Col key={i} lg={4} md={6} sm={12}>
-        <Link to={`/sheet/${usa.sheetId}`}>
+        <Link to={`/sheet/${usa.sheetId}`} className="link">
           <Card className="mb-5 mt-5 h-75">
             <Card.Body>
               <Card.Title>{usa.characterName}</Card.Title>
@@ -37,7 +37,7 @@ function Home() {
 
     cards.push(
       <Col key={cards.length} lg={4} md={6} sm={12}>
-        <Link>
+        <Link className="link">
           <Card onClick={() => {createNewSheet(userId, navigate)}} className="mb-5 mt-5 h-75">
             <Card.Body>
               <Card.Title>New Sheet</Card.Title>
@@ -58,9 +58,9 @@ function Home() {
     return (
         <>
             <div className="container-fluid">
-                <h1 className="display-5">Character Sheet Manager</h1>
+                <h1 className="display-3 mt-3">Character Sheet Manager</h1>
                 <div className="d-flex flex-grow-1 justify-content-end">
-                  <Link to="/" className="btn btn-info" onClick={logout}>
+                  <Link to="/" className="btn btn-info btn-lg" onClick={logout}>
                     Log Out
                   </Link>
                 </div>

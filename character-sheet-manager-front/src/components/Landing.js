@@ -1,19 +1,13 @@
-import { useEffect, useState, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import AuthContext from "../contexts/AuthContext";
+import {  Link } from "react-router-dom";
 
-function Landing() {
-
-    const auth = useContext(AuthContext);
-
-    const navigate = useNavigate();  
+function Landing() { 
 
     return (
         <div className="container-fluid">
-            <h1 className="display-5">Character Sheet Manager</h1>
+            <h1 className="display-3">Character Sheet Manager</h1>
             <div className="d-flex flex-grow-1 justify-content-end">
-                <Link to="/login" className="btn btn-info">Login</Link>
-                <Link to="/signup" className="btn btn-info">Sign Up</Link>
+                <Link to="/login" className="btn btn-info btn-lg">Login</Link>
+                <Link to="/signup" className="btn btn-info btn-lg">Sign Up</Link>
             </div>
         </div>
     );
