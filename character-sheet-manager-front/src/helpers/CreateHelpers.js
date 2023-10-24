@@ -1,4 +1,4 @@
-const createNewSheet = async (userId, navigate, setErrors) => {
+const createNewSheet = async (userId, navigate) => {
 
     const INITIAL_SHEET = {
       playerName: '',
@@ -22,26 +22,28 @@ const createNewSheet = async (userId, navigate, setErrors) => {
     fetch("http://localhost:8080/api/v1/sheet", config)
         .then(response => {
             if (response.ok) {
-                return response.json().then(data => createNewUserSheet(data, userId, navigate, setErrors));
+                return response.json().then(data => createNewUserSheet(data, userId, navigate));
             } else {
                 return response.json();
             }
         })
-        .then(errs => {
-            if (errs) {
-                return Promise.reject(errs);
+        .then(errors => {
+            if (errors) {
+                return Promise.reject(errors);
             }
         })
-        .catch(errs => {
-            if (errs.length) {
-                setErrors(errs);
-            } else {
-                setErrors([errs]);
+        .catch((errors) => {
+            if (errors) {
+              if (errors.length) {
+                throw new Error(errors.join('\n'));
+              } else {
+                throw new Error(errors);
+              }
             }
-        });
+          });
     }
 
-  const createNewUserSheet = async (data, userId, navigate, setErrors) => {
+  const createNewUserSheet = async (data, userId, navigate) => {
 
     // POST
     const config = {
@@ -65,17 +67,19 @@ const createNewSheet = async (userId, navigate, setErrors) => {
               return response.json();
           }
       })
-      .then(errs => {
-          if (errs) {
-              return Promise.reject(errs);
+      .then(errors => {
+          if (errors) {
+              return Promise.reject(errors);
           }
       })
-      .catch(errs => {
-          if (errs.length) {
-              setErrors(errs);
+      .catch((errors) => {
+        if (errors) {
+          if (errors.length) {
+            throw new Error(errors.join('\n'));
           } else {
-              setErrors([errs]);
+            throw new Error(errors);
           }
+        }
       });
   }
 

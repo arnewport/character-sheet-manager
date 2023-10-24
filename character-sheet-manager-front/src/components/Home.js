@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, Col, Row } from 'react-bootstrap';
 import useUserSheets from "../hooks/useUserSheets";
@@ -10,7 +10,6 @@ function Home() {
 
   // state
   const [userSheetArray, loading] = useUserSheets();
-  const [errors, setErrors] = useState([]);
 
   // navigation
   const navigate = useNavigate();
@@ -39,7 +38,7 @@ function Home() {
     cards.push(
       <Col key={cards.length} lg={4} md={6} sm={12}>
         <Link>
-          <Card onClick={() => {createNewSheet(userId, navigate, setErrors)}} className="mb-5 mt-5 h-75">
+          <Card onClick={() => {createNewSheet(userId, navigate)}} className="mb-5 mt-5 h-75">
             <Card.Body>
               <Card.Title>New Sheet</Card.Title>
               <Card.Text>Click to create a new sheet</Card.Text>
