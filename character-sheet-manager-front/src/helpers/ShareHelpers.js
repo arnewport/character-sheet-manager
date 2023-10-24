@@ -36,7 +36,6 @@ const handleFindRecipient = async (e, recepientName, setErrors, id, setShowShare
     return userIds;
   }
 
-  // I don't think we need to worry about preventing the default event here
   const handleShare = async (recipientId, id, setErrors, setShowShareModal) => {
 
     if (recipientId < 1) {

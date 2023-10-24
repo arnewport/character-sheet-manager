@@ -1,15 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Col, Row, Button } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import useUserSheets from "../hooks/useUserSheets";
 import { logout } from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
-import { createNewSheet, createNewUserSheet } from "../helpers/CreateHelpers";
+import { createNewSheet } from "../helpers/CreateHelpers";
 
 function Home() {
 
   // state
-  const [userSheetArray, setUserSheetArray, loading] = useUserSheets();
+  const [userSheetArray, loading] = useUserSheets();
   const [errors, setErrors] = useState([]);
 
   // navigation
@@ -61,9 +61,6 @@ function Home() {
             <div className="container-fluid">
                 <h1 className="display-5">Character Sheet Manager</h1>
                 <div className="d-flex flex-grow-1 justify-content-end">
-                  {/* <Button onClick={() => {setUserSheetArray([])}}>
-                    Refresh
-                  </Button> */}
                   <Link to="/" className="btn btn-info" onClick={logout}>
                     Log Out
                   </Link>
