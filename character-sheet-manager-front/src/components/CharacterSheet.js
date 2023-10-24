@@ -5,6 +5,7 @@ import useSheets from '../hooks/useSheets';
 import handleDelete from '../helpers/DeleteHelpers';
 import { handleFindRecipient, handleShare } from '../helpers/ShareHelpers';
 import { refreshSheet } from '../helpers/RefreshHelpers';
+import ValidationSummary from "./ValidationSummary";
 
 function CharacterSheet() {
 
@@ -14,7 +15,6 @@ function CharacterSheet() {
   // state
   const [sheet, setSheet, loading] = useSheets(id);
   const [recipientName, setRecipientName] = useState("");
-  const [recipientId, setRecipientId] = useState(0);
   const [errors, setErrors] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -37,6 +37,7 @@ function CharacterSheet() {
   };
 
   const handleCloseShareModal = () => {
+    setErrors([]);
     setShowShareModal(false);
   };
 
@@ -196,7 +197,7 @@ function CharacterSheet() {
               Save
             </Button>
             <Link to="/home" className="btn btn-warning me-2 mt-3">
-              Home
+              Cancel
             </Link>
             <Button onClick={handleShareClick}  className="btn btn-success me-2 mt-3">
               Share
@@ -225,32 +226,35 @@ function CharacterSheet() {
           </Modal>
 
           <Modal show={showShareModal} onHide={handleCloseShareModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Confirm Share</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form onSubmit={(e) => {handleFindRecipient(e, recipientName, id, setRecipientId)}}>
-                <Form.Group controlId="recipientName">
-                  <Form.Label>Enter the username of the recipient</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="recipientName"
-                    value={recipientName ? recipientName : ""}
-                    onChange={handleChangeRecipientName}
-                  />
-                </Form.Group>
-                <Button className="btn btn-info" type="submit">Submit</Button>
+            <Form onSubmit={(e) => {handleFindRecipient(e, recipientName, setErrors, id, setShowShareModal)}}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirm Share</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <ValidationSummary errors={errors} />
+                
+                  <Form.Group controlId="recipientName">
+                    <Form.Label>Enter the username of the recipient</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="recipientName"
+                      value={recipientName ? recipientName : ""}
+                      onChange={handleChangeRecipientName}
+                    />
+                  </Form.Group>
+                  {/* <Button className="btn btn-info" type="submit">Submit</Button> */}
+                
+              </Modal.Body>
+              <Modal.Footer>
+                <Button className="btn btn-success me-2" variant="primary" type="submit">
+                    Share
+                </Button>
+                <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>
+                    Cancel
+                </Button>
+              </Modal.Footer>
               </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button className="btn btn-success me-2" variant="primary" onClick={(e) => {handleShare(e, recipientId, id, setErrors)}}>
-                  Share
-              </Button>
-              <Button className="btn btn-warning" variant="secondary" onClick={handleCloseShareModal}>
-                  Cancel
-              </Button>
-            </Modal.Footer>
-          </Modal>
+            </Modal>
         </Container>
       );
     };
