@@ -22,8 +22,9 @@ public class UserSheetJdbcTemplateRepository implements UserSheetRepository {
     @Override
     public List<UserSheet> findUserSheetsByUserId(int userId) {
         final String sql = """
-                select *
-                from user_sheet
+                select us.*, s.player_name, s.character_name
+                from user_sheet as us
+                inner join sheet as s on us.sheet_id = s.sheet_id
                 where user_id = ?;
                 """;
 

@@ -29,7 +29,9 @@ public class TestHelper {
                     userId,
                     sheetId,
                     "OWNER",
-                    "NONE"
+                    "NONE",
+                    "Player " + id,
+                    "Character " + id
             );
     }
 

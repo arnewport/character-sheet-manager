@@ -28,8 +28,8 @@ function Home() {
         <Link to={`/sheet/${usa.sheetId}`}>
           <Card className="mb-5 mt-5 h-75">
             <Card.Body>
-              <Card.Title>Card {usa.sheetId}</Card.Title>
-              <Card.Text>Card description here.</Card.Text>
+              <Card.Title>{usa.characterName}</Card.Title>
+              <Card.Text>{usa.playerName}</Card.Text>
             </Card.Body>
           </Card>
         </Link>

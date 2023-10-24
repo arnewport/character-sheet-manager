@@ -16,6 +16,8 @@ public class UserSheetMapper implements RowMapper<UserSheet> {
         userSheet.setSheetId(resultSet.getInt("sheet_id"));
         userSheet.setRole(resultSet.getString("role"));
         userSheet.setStatus(resultSet.getString("status"));
+        userSheet.setPlayerName(resultSet.getString("player_name"));
+        userSheet.setCharacterName(resultSet.getString("character_name"));
         return userSheet;
     }
     
