@@ -55,7 +55,7 @@ function SignUp() {
               <label htmlFor="label">Username</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control align-left"
                 id="username"
                 name="username"
                 value={credentials.username}
@@ -67,7 +67,7 @@ function SignUp() {
               <label htmlFor="label">Password</label>
               <input
                 type="password"
-                className="form-control"
+                className="form-control align-left"
                 id="password"
                 name="password"
                 value={credentials.password}
@@ -75,7 +75,7 @@ function SignUp() {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="form-group align-left">
               <label htmlFor="label">Confirm password</label>
               <input
                 type="password"
@@ -88,12 +88,12 @@ function SignUp() {
               />
             </div>
             <div>
-              <Link to="/" className="btn btn-secondary">
-                Cancel
-              </Link>
-              <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary btn-lg">
                 Sign up
               </button>
+              <Link to="/" className="btn btn-warning btn-lg">
+                Cancel
+              </Link>
             </div>
           </div>
         </form>

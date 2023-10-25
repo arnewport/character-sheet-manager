@@ -1,6 +1,8 @@
+const url = process.env.REACT_APP_API_URL;
+
 const handleFindRecipient = async (e, recepientName, setErrors, id, setShowShareModal) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/api/v1/user/" + recepientName);
+    const response = await fetch(url + "api/v1/user/" + recepientName);
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -26,7 +28,7 @@ const handleFindRecipient = async (e, recepientName, setErrors, id, setShowShare
   }
 
   const findUserIdsBySheetId = async (sheetId, setErrors) => {
-    const response = await fetch("http://localhost:8080/api/v1/userSheet/user/" + sheetId);
+    const response = await fetch(url + "api/v1/userSheet/user/" + sheetId);
 
     if (!response.ok) {
         setErrors([`Failed to fetch user ids: ${response.status}`]);
@@ -56,7 +58,7 @@ const handleFindRecipient = async (e, recepientName, setErrors, id, setShowShare
       })
   }
 
-  fetch("http://localhost:8080/api/v1/userSheet", config)
+  fetch(url + "api/v1/userSheet", config)
       .then(response => {
           if (response.ok) {
             setErrors([]);

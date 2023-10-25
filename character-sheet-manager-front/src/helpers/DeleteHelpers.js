@@ -1,4 +1,8 @@
+
+const url = process.env.REACT_APP_API_URL;
+
 const handleDelete = (id, navigate) => {
+
     if (id !== null) {
         const config = {
             method: "DELETE",
@@ -6,7 +10,7 @@ const handleDelete = (id, navigate) => {
 
         const deleteAllUserSheets = async () => {
 
-          fetch("http://localhost:8080/api/v1/userSheet/deleteAll/" + id, config)
+          fetch(url + "api/v1/userSheet/deleteAll/" + id, config)
             .then(response => {
                 if (response.ok) {
                     // success
@@ -25,7 +29,7 @@ const handleDelete = (id, navigate) => {
 
         const deleteSheet = async () => {
 
-          fetch("http://localhost:8080/api/v1/sheet/" + id, config)
+          fetch(url + "api/v1/sheet/" + id, config)
             .then(response => {
                 if (response.ok) {
                     // success

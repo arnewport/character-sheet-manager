@@ -1,6 +1,9 @@
+const url = process.env.REACT_APP_API_URL;
+
 const refreshSheet = async (id, setSheet) => {
+
     if (id) {
-      fetch("http://localhost:8080/api/v1/sheet/" + id)
+      fetch(url + "api/v1/sheet/" + id)
       .then(response => {
                  if (response.ok) {
                   return response.json();

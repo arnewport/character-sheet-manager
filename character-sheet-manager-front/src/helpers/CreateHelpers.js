@@ -1,3 +1,5 @@
+const url = process.env.REACT_APP_API_URL;
+
 const createNewSheet = async (userId, navigate) => {
 
     const INITIAL_SHEET = {
@@ -19,7 +21,7 @@ const createNewSheet = async (userId, navigate) => {
       body: JSON.stringify(INITIAL_SHEET)
   }
 
-    fetch("http://localhost:8080/api/v1/sheet", config)
+    fetch(url + "api/v1/sheet", config)
         .then(response => {
             if (response.ok) {
                 return response.json().then(data => createNewUserSheet(data, userId, navigate));
@@ -59,7 +61,7 @@ const createNewSheet = async (userId, navigate) => {
       })
   }
 
-  fetch("http://localhost:8080/api/v1/userSheet", config)
+  fetch(url + "api/v1/userSheet", config)
       .then(response => {
           if (response.ok) {
               navigate(`/sheet/${data.id}`);

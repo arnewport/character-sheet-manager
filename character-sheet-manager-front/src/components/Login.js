@@ -44,7 +44,7 @@ function Login() {
             <label htmlFor="label">Username</label>
             <input
               type="text"
-              className="form-control"
+              className="form-control align-left"
               id="username"
               name="username"
               value={credentials.username}
@@ -56,7 +56,7 @@ function Login() {
             <label htmlFor="label">Password</label>
             <input
               type="password"
-              className="form-control"
+              className="form-control align-left"
               id="password"
               name="password"
               value={credentials.password}
@@ -65,10 +65,10 @@ function Login() {
             />
           </div>
           <div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary btn-lg">
                 Log in
             </button>
-            <Link to="/" className="btn btn-warning">
+            <Link to="/" className="btn btn-warning btn-lg">
               Cancel
             </Link>
           </div>

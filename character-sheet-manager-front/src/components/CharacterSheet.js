@@ -9,6 +9,9 @@ import ValidationSummary from "./ValidationSummary";
 
 function CharacterSheet() {
 
+  // url
+  const url = process.env.REACT_APP_API_URL;
+
   // parameters
   const { id } = useParams();
 
@@ -43,7 +46,7 @@ function CharacterSheet() {
 
     useEffect(() => {
       if (id) {
-        fetch("http://localhost:8080/api/v1/sheet/" + id)
+        fetch(url + "api/v1/sheet/" + id)
           .then(response => {
                      if (response.ok) {
                       return response.json();
@@ -83,7 +86,7 @@ function CharacterSheet() {
           },
           body: JSON.stringify(sheet),
         };
-        fetch("http://localhost:8080/api/v1/sheet/" + id, config)
+        fetch(url + "api/v1/sheet/" + id, config)
           .then(response => {
             if (response.ok) {
               // navigate("/agents");
@@ -193,19 +196,19 @@ function CharacterSheet() {
                 </Form.Group>
               </Col>
             </Row> 
-            <Button type="submit" className="btn btn-primary btn-lg">
+            <Button type="submit" className="btn btn-primary btn-lg btn-width">
               Save
             </Button>
-            <Link to="/home" className="btn btn-warning btn-lg">
+            <Link to="/home" className="btn btn-warning btn-lg btn-width">
               Cancel
             </Link>
-            <Button onClick={handleShareClick}  className="btn btn-success btn-lg">
+            <Button onClick={handleShareClick}  className="btn btn-success btn-lg btn-width">
               Share
             </Button>
-            <Button onClick={() => {refreshSheet(id, setSheet)}}  className="btn btn-info btn-lg">
+            <Button onClick={() => {refreshSheet(id, setSheet)}}  className="btn btn-info btn-lg btn-width">
               Refresh
             </Button>
-            <Button onClick={handleDeleteClick}  className="btn btn-danger btn-lg">
+            <Button onClick={handleDeleteClick}  className="btn btn-danger btn-lg btn-width">
               Delete
             </Button>           
           </Form>
@@ -216,10 +219,10 @@ function CharacterSheet() {
             </Modal.Header>
             <Modal.Body>Are you sure you want to delete this sheet?</Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-danger me-2 btn-lg" variant="primary" onClick={() => {handleDelete(id, navigate)}}>
+              <Button className="btn btn-danger me-2 btn-lg btn-width" variant="primary" onClick={() => {handleDelete(id, navigate)}}>
                   Delete
               </Button>
-              <Button className="btn btn-warning btn-lg" variant="secondary" onClick={handleCloseDeleteModal}>
+              <Button className="btn btn-warning btn-lg btn-width" variant="secondary" onClick={handleCloseDeleteModal}>
                   Cancel
               </Button>
             </Modal.Footer>
@@ -246,10 +249,10 @@ function CharacterSheet() {
                 
               </Modal.Body>
               <Modal.Footer>
-                <Button className="btn btn-success me-2 btn-lg" variant="primary" type="submit">
+                <Button className="btn btn-success me-2 btn-lg btn-width" variant="primary" type="submit">
                     Share
                 </Button>
-                <Button className="btn btn-warning btn-lg" variant="secondary" onClick={handleCloseShareModal}>
+                <Button className="btn btn-warning btn-lg btn-width" variant="secondary" onClick={handleCloseShareModal}>
                     Cancel
                 </Button>
               </Modal.Footer>

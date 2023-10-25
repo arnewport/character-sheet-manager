@@ -11,7 +11,7 @@ export async function login(credentials) {
     body: JSON.stringify(credentials)
   };
 
-  const response = await fetch(url + '/login', init);
+  const response = await fetch(url + 'login', init);
   if (response.status === 200) {
     const jwtTokenResponse = await response.json();
     localStorage.setItem('jwt_token', jwtTokenResponse.jwt_token);
@@ -31,7 +31,7 @@ export async function register(credentials) {
     body: JSON.stringify(credentials)
   };
 
-  const response = await fetch(url + '/register', init);
+  const response = await fetch(url + 'register', init);
   if (response.status === 400) {
     const result = response.json();
     return { errors: result.messages };
@@ -55,7 +55,7 @@ export async function refreshToken() {
     }
   }
 
-  const response = await fetch(url + '/refresh-token', init);
+  const response = await fetch(url + 'refresh-token', init);
   if (response.status === 200) {
     const jwtTokenResponse = await response.json();
     localStorage.setItem('jwt_token', jwtTokenResponse.jwt_token);

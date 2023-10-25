@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 const useSheets = (sheetId) => {
     
     // variables
-    const URL = "http://localhost:8080/api/v1/sheet/";
+    const url = process.env.REACT_APP_API_URL;
+    const URL = url + "api/v1/sheet/";
 
     // state
     const [loading, setLoading] = useState(true);
