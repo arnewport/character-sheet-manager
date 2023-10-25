@@ -34,7 +34,7 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -52,7 +52,7 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @PostMapping("/api/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Map<String, String> credentials) {
         Result<AppUser> result = appUserService.add(
                 credentials.get("username"), credentials.get("password"));
@@ -64,7 +64,7 @@ public class AuthController {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/api/refresh-token")
+    @PostMapping("/refresh-token")
     public ResponseEntity<Map<String, String>> refreshToken(@AuthenticationPrincipal AppUser appUser) {
         String jwt = jwtConverter.getTokenFromUser(appUser);
         Map<String, String> result = new HashMap<>();
