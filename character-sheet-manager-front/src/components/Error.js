@@ -5,8 +5,7 @@ function Error({ message }) {
 
   return (
     <p>
-      Error{" "}
-      {location.state ? ` - ${location.state.message}` : ""}
+      Error {location.state ? ` - ${location.state.message}` : ""}
       {message}
     </p>
   );

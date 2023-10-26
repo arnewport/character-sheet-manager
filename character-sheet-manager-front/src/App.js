@@ -72,8 +72,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/home" element={renderWithAuthority(Home, "USER")} />
-            <Route path="/sheet/:id" element={renderWithAuthority(CharacterSheet, "USER")} />
-            <Route path="/error" element={<Error />}/>
+            <Route
+              path="/sheet/:id"
+              element={renderWithAuthority(CharacterSheet, "USER")}
+            />
+            <Route path="/error" element={<Error />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

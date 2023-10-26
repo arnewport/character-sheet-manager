@@ -1,13 +1,12 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from "react-bootstrap";
 import useUserSheets from "../hooks/useUserSheets";
 import { logout } from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
 import { createNewSheet } from "../helpers/CreateHelpers";
 
 function Home() {
-
   // state
   const [userSheetArray, loading] = useUserSheets();
 
@@ -20,9 +19,7 @@ function Home() {
 
   // row contents
   const generateCards = () => {
-
-  const cards = userSheetArray.map((usa, i) => 
-    (
+    const cards = userSheetArray.map((usa, i) => (
       <Col key={i} lg={4} md={6} sm={12}>
         <Link to={`/sheet/${usa.sheetId}`} className="link">
           <Card className="mb-5 mt-5 h-75">
@@ -38,7 +35,12 @@ function Home() {
     cards.push(
       <Col key={cards.length} lg={4} md={6} sm={12}>
         <Link className="link">
-          <Card onClick={() => {createNewSheet(userId, navigate)}} className="mb-5 mt-5 h-75">
+          <Card
+            onClick={() => {
+              createNewSheet(userId, navigate);
+            }}
+            className="mb-5 mt-5 h-75"
+          >
             <Card.Body>
               <Card.Title>New Sheet</Card.Title>
               <Card.Text>Click to create a new sheet</Card.Text>
@@ -46,30 +48,29 @@ function Home() {
           </Card>
         </Link>
       </Col>
-    )
+    );
 
-  return cards;
-}
+    return cards;
+  };
 
   if (loading) {
     return null;
-  }  
+  }
 
-    return (
-        <>
-            <div className="container-fluid">
-                <h1 className="display-3 mt-3">Character Sheet Manager</h1>
-                <div className="d-flex flex-grow-1 justify-content-end">
-                  <Link to="/" className="btn btn-info btn-lg" onClick={logout}>
-                    Log Out
-                  </Link>
-                </div>
-                <Row>
-                    {generateCards()}
-                </Row>
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="container-fluid">
+        <h1 className="display-3 mt-3">Character Sheet Manager</h1>
+        <h3 className="display-5 mt-3">Welcome {user.username}!</h3>
+        <div className="d-flex flex-grow-1 justify-content-end">
+          <Link to="/" className="btn btn-info btn-lg" onClick={logout}>
+            Log Out
+          </Link>
+        </div>
+        <Row>{generateCards()}</Row>
+      </div>
+    </>
+  );
 }
 
 export default Home;

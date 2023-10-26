@@ -88,7 +88,7 @@ function SignUp() {
               />
             </div>
             <div>
-            <button type="submit" className="btn btn-primary btn-lg">
+              <button type="submit" className="btn btn-primary btn-lg">
                 Sign up
               </button>
               <Link to="/" className="btn btn-warning btn-lg">

@@ -14,23 +14,23 @@ function Login() {
 
   const { handleLoggedIn } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     setErrors([]);
     login(credentials)
-      .then(user => {
+      .then((user) => {
         handleLoggedIn(user);
         navigate("/home");
       })
-      .catch(err => {
-        setErrors(['Invalid username/password.']);
+      .catch((err) => {
+        setErrors(["Invalid username/password."]);
       });
   };
 
   const handleChange = (evt) => {
-    const nextCredentials = {...credentials};
+    const nextCredentials = { ...credentials };
     nextCredentials[evt.target.name] = evt.target.value;
     setCredentials(nextCredentials);
   };
@@ -66,7 +66,7 @@ function Login() {
           </div>
           <div>
             <button type="submit" className="btn btn-primary btn-lg">
-                Log in
+              Log in
             </button>
             <Link to="/" className="btn btn-warning btn-lg">
               Cancel
