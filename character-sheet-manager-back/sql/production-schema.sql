@@ -42,7 +42,8 @@ create table app_user_role (
 
 -- data
 insert into sheet values
-	(1, 'Player', 'Character', 10, 20, 16, 14, 19, 0);
+	(1, 'Andrew', 'Rick Astley', 19, 87, 20, 6, 10, 9),
+    (2, 'Not Andrew', 'Random Character', 10, 20, 16, 14, 19, 0);
 
 insert into app_role (`name`) values
     ('USER'),
@@ -78,4 +79,5 @@ create table user_sheet (
 -- bridge data
 
 insert into user_sheet values 
-	(1, 1, 1, "OWNER", "NONE");
+	(1, 1, 1, "OWNER", "NONE"),
+    (2, 2, 2, "OWNER", "NONE");
