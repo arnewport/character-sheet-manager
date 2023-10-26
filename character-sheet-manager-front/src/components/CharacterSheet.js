@@ -251,8 +251,8 @@ function CharacterSheet() {
             handleFindRecipient(
               e,
               recipientName,
-              setErrors,
               id,
+              setErrors,
               setShowShareModal
             );
           }}
