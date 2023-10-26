@@ -76,7 +76,7 @@ function makeUserFromJwt(jwtToken) {
     return {
       username: decodedToken.sub,
       authorities: decodedToken.authorities,
-      userId: decodedToken.user_id,
+      userId: decodedToken.user_id
     };
   }
 }
