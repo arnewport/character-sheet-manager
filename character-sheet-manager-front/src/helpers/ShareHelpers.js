@@ -3,7 +3,7 @@ const url = process.env.REACT_APP_API_URL;
 const handleFindRecipient = async (
   e,
   recepientName,
-  id,
+  sheetId,
   setErrors,
   setShowShareModal
 ) => {
@@ -21,16 +21,16 @@ const handleFindRecipient = async (
   }
 
   const data = await response.json();
-  const userIds = await findUserIdsBySheetId(id, setErrors);
   const recipientId = await data.id;
 
-  if (userIds.includes(data.id)) {
+  const userIds = await findUserIdsBySheetId(sheetId, setErrors);
+  if (userIds.includes(recipientId)) {
     setErrors(["This user already has access to this character sheet."]);
     return;
   }
 
   setErrors([]);
-  await handleShare(recipientId, id, setErrors, setShowShareModal);
+  await handleShare(recipientId, sheetId, setErrors, setShowShareModal);
 };
 
 const findUserIdsBySheetId = async (sheetId, setErrors) => {
@@ -44,7 +44,7 @@ const findUserIdsBySheetId = async (sheetId, setErrors) => {
   return userIds;
 };
 
-const handleShare = async (recipientId, id, setErrors, setShowShareModal) => {
+const handleShare = async (recipientId, sheetId, setErrors, setShowShareModal) => {
   if (recipientId < 1) {
     setErrors(["The recipient has either not been selected or was not found."]);
     return;
@@ -57,7 +57,7 @@ const handleShare = async (recipientId, id, setErrors, setShowShareModal) => {
     },
     body: JSON.stringify({
       userId: recipientId,
-      sheetId: id,
+      sheetId: sheetId,
       role: "EDITOR",
       status: "NONE",
     }),

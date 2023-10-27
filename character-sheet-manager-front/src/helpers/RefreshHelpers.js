@@ -19,8 +19,23 @@ const refreshSheet = async (id, setSheet) => {
   }
 };
 
-const refreshHome = async () => {
-  return;
-};
+const refreshHome = async (id, setUserSheetArray) => {
+  if (id) {
+    fetch(url + "api/v1/userSheet/" + id)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(
+            new Error(`Unexpected status code ${response.status}`)
+          );
+        }
+      })
+      .then(setUserSheetArray)
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+}
 
 export { refreshSheet, refreshHome };

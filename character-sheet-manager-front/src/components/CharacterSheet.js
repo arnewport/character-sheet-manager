@@ -196,7 +196,7 @@ function CharacterSheet() {
           Save
         </Button>
         <Link to="/home" className="btn btn-warning btn-lg btn-width">
-          Cancel
+          Home
         </Link>
         <Button
           onClick={handleShareClick}
@@ -287,7 +287,7 @@ function CharacterSheet() {
               variant="secondary"
               onClick={handleCloseShareModal}
             >
-              Cancel
+              Home
             </Button>
           </Modal.Footer>
         </Form>

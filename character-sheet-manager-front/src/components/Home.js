@@ -1,14 +1,15 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Row, Button } from "react-bootstrap";
 import useUserSheets from "../hooks/useUserSheets";
 import { logout } from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
 import { createNewSheet } from "../helpers/CreateHelpers";
+import { refreshHome } from "../helpers/RefreshHelpers";
 
 function Home() {
   // state
-  const [userSheetArray, loading] = useUserSheets();
+  const [userSheetArray, setUserSheetArray, loading] = useUserSheets();
 
   // navigation
   const navigate = useNavigate();
@@ -63,6 +64,14 @@ function Home() {
         <h1 className="display-3 mt-3">Character Sheet Manager</h1>
         <h3 className="display-5 mt-3">Welcome {user.username}!</h3>
         <div className="d-flex flex-grow-1 justify-content-end">
+          <Button
+            onClick={() => {
+              refreshHome(userId, setUserSheetArray);
+            }}
+            className="btn btn-info btn-lg btn-width"
+          >
+            Refresh
+          </Button>
           <Link to="/" className="btn btn-info btn-lg" onClick={logout}>
             Log Out
           </Link>
